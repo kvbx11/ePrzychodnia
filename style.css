@@ -1,0 +1,47 @@
+@font-face {
+    font-family: "Noto Sans Regular";
+    src: url('../eNFZ/Noto_Sans/static/NotoSans-Regular.ttf');
+
+    font-family: "Noto Sans Extralight";
+    src:url('../eNFZ/Noto_Sans/static/NotoSans-ExtraLight.ttf');
+}
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+/*index.html*/
+header {
+    background-color: #1f2937;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+}
+nav {
+    background-color: #e5e7eb;
+    width: 256px;
+    padding: 16px;
+}
+main {
+    flex: 1;
+    padding: 16px;
+}
+footer {
+    background-color: #1f2937;
+    color: white;
+    text-align: center;
+    padding: 8px;
+    width: 100%;
+}
+.icon-button {
+    color: white;
+    font-size: 1.25rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
