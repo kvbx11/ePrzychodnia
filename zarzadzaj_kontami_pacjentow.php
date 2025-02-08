@@ -34,41 +34,40 @@
             mysqli_close($connect);
         ?>
         <div>
-            <form action="zaloguj.php">
-                <button class="icon-button"><i class="fa-solid fa-user"></i></button> 
-            </form>
-            <form action="wyloguj.php">
-                <button class="icon-button"><i class="fa fa-sign-out"></i></button>
-            </form>
-            <?php
-                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+        <form action="zaloguj.php">
+    <button class="icon-button"><i class="fa-solid fa-user"></i></button> 
+</form>
+<form action="wyloguj.php">
+    <button class="icon-button"><i class="fa fa-sign-out"></i></button>
+</form>
+<?php
+$connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
 
-                if (!$connect) {
-                    die("Połączenie z bazą danych nie powiodło się.");
-                }
+if (!$connect) {
+    die("Połączenie z bazą danych nie powiodło się.");
+}
 
-                $query1 = "SELECT `kto` FROM `zalogowani`";
-                $result1 = mysqli_query($connect, $query1);
+$query1 = "SELECT `kto` FROM `zalogowani`";
+$result1 = mysqli_query($connect, $query1);
 
-                if ($row = mysqli_fetch_assoc($result1)) {
-                    $kto = $row['kto']; 
-                    
-                    if ($kto == "admin" || $kto == "recepcjonista") {
-                        echo '            
-                        <form action="ustawienia.php">
-                            <button type="submit" class="icon-button"><i class="fa-solid fa-cog"></i></button> 
-                        </form>';
-                    }
-                }
+if ($row = mysqli_fetch_assoc($result1)) { // Pobranie pierwszego wiersza
+    $kto = $row['kto']; // Przypisanie wartości kolumny 'kto'
+    
+    if ($kto == "admin" || $kto == "recepcjonista") {
+        echo '            
+        <form action="ustawienia.php">
+            <button type="submit" class="icon-button"><i class="fa-solid fa-cog"></i></button> 
+        </form>';
+    }
+}
 
-                mysqli_close($connect);
-                ?>
-        </div>
+mysqli_close($connect);
+?>
     </header>
     
     <div style="display: flex; flex: 1;">
         <nav>
-        <?php
+            <?php
                 $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
 
                 if (!$connect) {
@@ -115,20 +114,52 @@
                         }
                     }
                 }
-            
+                mysqli_close($connect);
             ?>
         </nav>
         
         <main>
             <div class="index-content">
-            <p>Jestem:</p>
-                <form method="post" action="lekarz.php">
-                    <input type="submit" name="lekarz" value="Lekarzem">
+                <?php
+                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+
+                    if (!$connect) {
+                        die("Połączenie z bazą danych nie powiodło się.");
+                    }
+
+                    
+                ?>
+                <p>Czyimi kontami chcesz zarządzać?</p>
+                <form action="zarzadzaj_kontami_pacjentow.php" method="post">
+                    <input type="submit" value="Pacjentów">
                 </form>
                 <br>
-                <form method="post" action="pacjent.php">
-                    <input type="submit" name="pacjent" value="Pacjentem">
+                <form action="zarzadzaj_kontami_lekarzy.php" method="post">
+                    <input type="submit" value="Lekarzy">
                 </form>
+                <p>Wpisz numer konta do usuniecia</p>
+                <form action="usun_konto_pracownik.php" method="post">
+                    <input type="number" name="id_konta" id="i0">
+                    <input type="submit" value="Usuń">
+                </form>
+                <br>
+                <br>
+                <br>
+                <?php
+                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+
+                    if (!$connect) {
+                        die("Połączenie z bazą danych nie powiodło się.");
+                    }
+
+                    $query0="select * from `pacjenci`";
+                    $result0=mysqli_query($connect,$query0);
+
+                    while($row=mysqli_fetch_assoc($result0)){
+                        echo "ID: ".$row['id_pacjenta'].", Imię: ".$row['imie'].", Nazwisko: ".$row['nazwisko'].", Ulica: ".$row['ulica'].", Nr_domu: ".$row['nr_domu'].", Kod Pocztowy: ".$row['kp'].", Miasto: ".$row['miasto'].", Telefon: ".$row['tel'].", Email: ".$row['email'].", Login: ".$row['login'].", Hasło: ".$row['haslo']."<br><br>";
+                    }
+                    
+                ?>
             </div>
         </main>
     </div>

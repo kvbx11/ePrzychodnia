@@ -10,7 +10,7 @@
 <body>
     <header>
         <div class="w-10"></div> 
-        <h1 class="text-xl font-bold text-center flex-1">ePrzychodnia</h1>
+        <h1 class="text-xl font-bold text-center flex-1"><a href="index.php">ePrzychodnia</a></h1>
         <?php
             $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
 
@@ -68,16 +68,65 @@ mysqli_close($connect);
     <div style="display: flex; flex: 1;">
         <nav>
             <?php
-            
-            
-            
+                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+
+                if (!$connect) {
+                    die("Połączenie z bazą danych nie powiodło się.");
+                }
+
+                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+
+                if (!$connect) {
+                    die("Połączenie z bazą danych nie powiodło się.");
+                }
+                $query0="select * from `zalogowani`";
+                $result0=mysqli_query($connect,$query0);
+
+                if(mysqli_num_rows($result0)>0){
+                    $query1 = "SELECT `kto` FROM `zalogowani`";
+                    $result1 = mysqli_query($connect, $query1);
+                    $kto;
+                    if ($row = mysqli_fetch_assoc($result1)) {
+                        $kto = $row['kto']; 
+                    }
+                    $query2="select * from `uprawnienia` where `stanowisko`='".$kto."'";
+                    $result2=mysqli_query($connect,$query2);
+    
+                    if($row=mysqli_fetch_assoc($result2)){
+                        //print_r($row);
+                        $zaloz_konto=$row['zaloz_konto'];
+                        $usun_konto=$row['usun_konto'];
+                        $dane_pacjentow=$row['dane_pacjentow'];
+                        $dodaj_wpis=$row['dodaj_wpis'];
+                        $rezerwuj=$row['rezerwuj'];
+                        $przegladaj_historie=$row['przegladaj_historie'];
+    
+                        if($zaloz_konto==1 && $usun_konto==1){
+                            echo "<p><a href='zarzadzaj_kontami.php'>Zarządzaj kontami</a></p>";
+                        }
+                        if($dane_pacjentow==1){
+                            echo "<p><a href='dane_pacjentow.php'>Sprawdź dane pacjentów</a></p>";
+                        }
+                        if($dodaj_wpis==1){
+                            echo "<p><a href='dodaj_wpis.php'>Dodaj wizytę</a></p>";
+                            
+                        }
+                        if($rezerwuj==1){
+                            echo "<p><a href='rezerwuj.php'>Zarezerwuj wizytę</a></p>";
+    
+                        }
+                        if($przegladaj_historie==1){
+                            echo "<p><a href='historia.php'>Przeglądaj historię badań</a></p>";
+                        }
+                    }
+                }
             
             ?>
         </nav>
         
         <main>
             <div class="index-content">
-
+                <h2>Aktualności</h2>
             </div>
         </main>
     </div>

@@ -34,36 +34,35 @@
             mysqli_close($connect);
         ?>
         <div>
-            <form action="zaloguj.php">
-                <button class="icon-button"><i class="fa-solid fa-user"></i></button> 
-            </form>
-            <form action="wyloguj.php">
-                <button class="icon-button"><i class="fa fa-sign-out"></i></button>
-            </form>
-            <?php
-                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+        <form action="zaloguj.php">
+    <button class="icon-button"><i class="fa-solid fa-user"></i></button> 
+</form>
+<form action="wyloguj.php">
+    <button class="icon-button"><i class="fa fa-sign-out"></i></button>
+</form>
+<?php
+$connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
 
-                if (!$connect) {
-                    die("Połączenie z bazą danych nie powiodło się.");
-                }
+if (!$connect) {
+    die("Połączenie z bazą danych nie powiodło się.");
+}
 
-                $query1 = "SELECT `kto` FROM `zalogowani`";
-                $result1 = mysqli_query($connect, $query1);
+$query1 = "SELECT `kto` FROM `zalogowani`";
+$result1 = mysqli_query($connect, $query1);
 
-                if ($row = mysqli_fetch_assoc($result1)) {
-                    $kto = $row['kto']; 
-                    
-                    if ($kto == "admin" || $kto == "recepcjonista") {
-                        echo '            
-                        <form action="ustawienia.php">
-                            <button type="submit" class="icon-button"><i class="fa-solid fa-cog"></i></button> 
-                        </form>';
-                    }
-                }
+if ($row = mysqli_fetch_assoc($result1)) { // Pobranie pierwszego wiersza
+    $kto = $row['kto']; // Przypisanie wartości kolumny 'kto'
+    
+    if ($kto == "admin" || $kto == "recepcjonista") {
+        echo '            
+        <form action="ustawienia.php">
+            <button type="submit" class="icon-button"><i class="fa-solid fa-cog"></i></button> 
+        </form>';
+    }
+}
 
-                mysqli_close($connect);
-                ?>
-        </div>
+mysqli_close($connect);
+?>
     </header>
     
     <div style="display: flex; flex: 1;">
@@ -115,20 +114,41 @@
                         }
                     }
                 }
-            
             ?>
         </nav>
         
         <main>
             <div class="index-content">
-            <p>Jestem:</p>
-                <form method="post" action="lekarz.php">
-                    <input type="submit" name="lekarz" value="Lekarzem">
-                </form>
+                <p>Zarejestruj konto lekarza na platformie ePrzychodnia</p>
                 <br>
-                <form method="post" action="pacjent.php">
-                    <input type="submit" name="pacjent" value="Pacjentem">
-                </form>
+            <form method="post">
+                            <input type="text" name="imie" placeholder="Imię"><br>
+                            <input type="text" name="nazwisko" placeholder="Nazwisko"><br>
+                            <input type="text" name="specjalizacja" placeholder="Specjalizacja"><br>
+                            <input type="text" name="PWZ" placeholder="Nr Prawa Wykonywania Zawodu"><br>
+                            <input type="tel" name="tel" placeholder="Telefon"><br>
+                            <input type="email" name="email" placeholder="E-mail"><br>
+                            <input type="text" name="stanowisko" placeholder="Stanowisko"><br>
+                            <input type="text" name="haslo" placeholder="Hasło"><br><br>
+                            <input type="submit" value="Prześlij" name="submit">
+                        </form>
+                        <?php
+                        $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+
+                        if (!$connect) {
+                            die("Połączenie z bazą danych nie powiodło się.");
+                        }
+                        if(isset($_POST['submit'])){
+                            $imie = $_POST['imie'];
+                            $nazwisko = $_POST['nazwisko'];
+                            $login = strtolower(substr($imie, 0, 3) . substr($nazwisko, 0, 3) . rand(100, 999));
+                            $query5 = "INSERT INTO `pracownik` (`Imie`, `Nazwisko`, `Specjalizacja`, `PWZ`, `tel`, `email`, `stanowisko`, `login`, `haslo`) VALUES ('".$_POST['imie']."','".$_POST['nazwisko']."','".$_POST['specjalizacja']."','".$_POST['PWZ']."','".$_POST['tel']."','".$_POST['email']."','".$_POST['stanowisko']."','".$login."', '".$_POST['haslo']."')";
+                            $result5=mysqli_query($connect,$query5);
+                            echo "Pomyślnie dodano!";
+                        }
+                        
+                        mysqli_close($connect);
+                        ?>
             </div>
         </main>
     </div>
