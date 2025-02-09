@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 09, 2025 at 06:48 PM
+-- Generation Time: Feb 09, 2025 at 09:08 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -70,7 +70,8 @@ CREATE TABLE `pacjenci` (
 
 INSERT INTO `pacjenci` (`id_pacjenta`, `imie`, `nazwisko`, `ulica`, `nr_domu`, `kp`, `miasto`, `tel`, `email`, `PESEL`, `login`, `haslo`) VALUES
 (1, 'Urszula', 'Krawiec', 'Pomorska', '14C/8', '51--00', 'Wałbrzych', '123456789', 'ulakraw@o2.pl', '84128463210', 'urskra632', 'ulkakrawiec10'),
-(3, 'Anna', 'Kowalska', 'Zamkowa', '13/3', '61-001', 'Poznań', '987654321', 'akowalska@vlopoznan.pl', '84128463210', 'annkow632', 'ankowalska10');
+(3, 'Anna', 'Kowalska', 'Zamkowa', '13/3', '61-001', 'Poznań', '987654321', 'akowalska@vlopoznan.pl', '84128463210', 'annkow632', 'ankowalska10'),
+(4, 'Janusz', 'Kraska', 'Magazynowa', '10/2', '45-089', 'Radom', '123456789', 'kraskajanek@op.pl', '21874361985', 'jankra619', 'janekk123');
 
 -- --------------------------------------------------------
 
@@ -132,19 +133,20 @@ CREATE TABLE `uprawnienia` (
   `dane_pacjentow` tinyint(1) DEFAULT NULL,
   `dodaj_wpis` tinyint(1) DEFAULT NULL,
   `rezerwuj` tinyint(1) DEFAULT NULL,
-  `przegladaj_historie` tinyint(1) DEFAULT NULL
+  `przegladaj_historie` tinyint(1) DEFAULT NULL,
+  `przegladaj_rezerwacje` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `uprawnienia`
 --
 
-INSERT INTO `uprawnienia` (`stanowisko`, `zaloz_konto`, `usun_konto`, `dane_pacjentow`, `dodaj_wpis`, `rezerwuj`, `przegladaj_historie`) VALUES
-('admin', 1, 1, 0, 0, 0, 0),
-('lekarz', 0, 0, 1, 1, 0, 1),
-('pielegniarz', 0, 0, 0, 1, 0, 0),
-('recepcjonista', 1, 0, 0, 0, 1, 0),
-('pacjent', 0, 0, 0, 0, 1, 1);
+INSERT INTO `uprawnienia` (`stanowisko`, `zaloz_konto`, `usun_konto`, `dane_pacjentow`, `dodaj_wpis`, `rezerwuj`, `przegladaj_historie`, `przegladaj_rezerwacje`) VALUES
+('admin', 1, 1, 0, 0, 0, 0, 0),
+('lekarz', 0, 0, 1, 1, 0, 1, 1),
+('pielegniarz', 0, 0, 0, 1, 0, 0, 0),
+('recepcjonista', 1, 0, 0, 0, 1, 0, 0),
+('pacjent', 0, 0, 0, 0, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -157,13 +159,6 @@ CREATE TABLE `zalogowani` (
   `haslo` varchar(100) DEFAULT NULL,
   `kto` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `zalogowani`
---
-
-INSERT INTO `zalogowani` (`login`, `haslo`, `kto`) VALUES
-('annkow632', 'e64d0550468c07936609c3a6edf563b968a308b2', 'pacjent');
 
 --
 -- Indeksy dla zrzutów tabel
@@ -202,7 +197,7 @@ ALTER TABLE `uprawnienia`
 -- AUTO_INCREMENT for table `pacjenci`
 --
 ALTER TABLE `pacjenci`
-  MODIFY `id_pacjenta` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_pacjenta` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `pracownik`

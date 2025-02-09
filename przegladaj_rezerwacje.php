@@ -94,7 +94,6 @@ mysqli_close($connect);
                         $dodaj_wpis=$row['dodaj_wpis'];
                         $rezerwuj=$row['rezerwuj'];
                         $przegladaj_historie=$row['przegladaj_historie'];
-                        $przegladaj_rezerwacje=$row['przegladaj_rezerwacje'];
     
                         if($zaloz_konto==1 && $usun_konto==1){
                             echo "<p><a href='zarzadzaj_kontami.php'>Zarządzaj kontami</a></p>";
@@ -118,20 +117,58 @@ mysqli_close($connect);
                         }
                     }
                 }
-            
+                mysqli_close($connect);
             ?>
         </nav>
         
         <main>
-            <div class="index-content" style="margin-left: 30px">
-                <h2>Aktualności</h2>
-                <img src="przychodnia1.jpg" alt="przychodnia_wyremontowana">
-                <h3>Recepcja naszej przychodni została wyremontowana!</h3>
-                <p>Z radością informujemy, że zakończyliśmy remont recepcji w naszej przychodni. Nowe wnętrze jest teraz bardziej przestronne, nowoczesne i komfortowe dla pacjentów. Wprowadziliśmy lepsze oświetlenie, wygodne miejsca do siedzenia oraz intuicyjny system kolejkowy, który usprawni obsługę.
+            <div class="index-content">
+                <?php
+                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
 
-Dzięki modernizacji rejestracja będzie szybsza i bardziej efektywna. Mamy nadzieję, że zmiany pozytywnie wpłyną na Państwa wygodę i satysfakcję z naszych usług.
+                    if (!$connect) {
+                        die("Połączenie z bazą danych nie powiodło się.");
+                    }
 
-Zapraszamy do odwiedzin i życzymy dużo zdrowia!</p>
+                    $query="select `kto`,`login` from `zalogowani`";
+                    $res=mysqli_query($connect,$query);
+                    $row=mysqli_fetch_assoc($res);
+
+                    if($row['kto']=="pacjent"){
+                        echo "<h1>Zaplanowane wizyty</h1>";
+                        $query6="select `id_pacjenta` from `pacjenci` where `login`='".$row['login']."'";
+                        $res6=mysqli_query($connect,$query6);
+                        $row3=mysqli_fetch_assoc($res6); //id lekarza
+                        $query1="select `data`, `godzina`, `specjalizacja_lekarza` from `rezerwacje` where `id_pacjenta`=".$row3['id_pacjenta'].";";
+                        $res1=mysqli_query($connect,$query1);
+                        $row1=mysqli_fetch_assoc($res1);
+                        if(mysqli_num_rows($res1)>0){
+                            echo "Data: ".$row1['data'].", Godzina: ".$row1['godzina'].", Specjalizacja lekarza: ".$row1['specjalizacja_lekarza']."";
+                        }
+                        else{
+                            echo "Nie masz zaplanowanych wizyt!";
+                        }
+                    }
+
+                    if($row['kto']=="lekarz"){
+                        $query7="select `specjalizacja` from `pracownik` where `login`='".$row['login']."';";
+                        $res7=mysqli_query($connect,$query7);
+                        $row4=mysqli_fetch_assoc($res7); 
+
+                        echo '<h1>Zaplanowane wizyty dla Twojej specjalizacji</h1>';
+                        $query5="select `id_pacjenta`,`data`,`godzina` from `rezerwacje` where `specjalizacja_lekarza`='".$row4['specjalizacja']."';";
+                        $res5=mysqli_query($connect,$query5);
+                        $row3=mysqli_fetch_assoc($res5);
+                        if(mysqli_num_rows($res5)>0){
+                            echo "ID Pacjenta: ".$row3['id_pacjenta'].", Data: ".$row3['data'].", Godzina: ".$row['godzina']."<br><br>";
+                        }
+                        else{
+                            echo "Brak zaplanowanych wizyt!";
+                        }
+
+                    }
+                    
+                ?>
             </div>
         </main>
     </div>

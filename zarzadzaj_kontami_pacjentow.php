@@ -112,6 +112,9 @@ mysqli_close($connect);
                         if($przegladaj_historie==1){
                             echo "<p><a href='historia.php'>Przeglądaj historię badań</a></p>";
                         }
+                        if($row['przegladaj_rezerwacje']==1){
+                            echo "<p><a href='przegladaj_rezerwacje.php'>Przeglądaj rezerwacje</a></p>";
+                        }
                     }
                 }
                 mysqli_close($connect);

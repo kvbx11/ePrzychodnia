@@ -45,3 +45,11 @@ footer {
     border: none;
     cursor: pointer;
 }
+h1>a{
+    text-decoration: none;
+    color: white;
+}
+p>a{
+    text-decoration: none;
+    color: black;
+}

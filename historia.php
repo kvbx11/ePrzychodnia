@@ -68,6 +68,9 @@
                         if($przegladaj_historie==1){
                             echo "<p><a href='historia.php'>Przeglądaj historię badań</a></p>";
                         }
+                        if($row['przegladaj_rezerwacje']==1){
+                            echo "<p><a href='przegladaj_rezerwacje.php'>Przeglądaj rezerwacje</a></p>";
+                        }
                     }
                 }
                 mysqli_close($connect);
@@ -101,7 +104,12 @@
                 $row1=mysqli_fetch_assoc($result1);
                 $id=$row1['id_pacjenta'];
 
-                // wyswietlanie z bazy dla danego id
+                
+                $query2="select `imie`,`nazwisko`,`opis_badania`,`diagnoza`,`recepta`,`data` from `badania` inner join `pracownik` on `pracownik`.`id_lekarza`=`badania`.`id_lekarza` where `id_pacjenta`='".$id."';";
+                $res2=mysqli_query($connect,$query2);
+                $row2=mysqli_fetch_assoc($res2);
+
+                echo "Lekarz: ".$row2['imie']." ".$row2['nazwisko'].", Opis wykonywanego badania: ".$row2['opis_badania'].", Diagnoza: ".$row2['diagnoza'].", Recepta: ".$row2['recepta'].", Data badania: ".$row2['data']."<br><br>"; 
 
                 ?>
         </main>

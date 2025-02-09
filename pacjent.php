@@ -112,6 +112,9 @@ mysqli_close($connect);
                         if($przegladaj_historie==1){
                             echo "<p><a href='historia.php'>Przeglądaj historię badań</a></p>";
                         }
+                        if($row['przegladaj_rezerwacje']==1){
+                            echo "<p><a href='przegladaj_rezerwacje.php'>Przeglądaj rezerwacje</a></p>";
+                        }
                     }
                 }
             
@@ -150,7 +153,7 @@ mysqli_close($connect);
                     $imie1 = $_POST['imie'];
                     $nazw1 = $_POST['nazwisko'];
                     $pesel = $_POST['pesel'];
-                    $login1 = strtolower(substr($imie1, 0, 3) . substr($nazw1, 0, 3) . substr($pesel, 5,strlen($pesel)));
+                    $login1 = strtolower(substr($imie1, 0, 3) . substr($nazw1, 0, 3) . substr($pesel, 6));
                     $haslo1 = $_POST['haslo'];
                     $query4 = "INSERT INTO `pacjenci` (`imie`, `nazwisko`, `ulica`, `nr_domu`, `kp`, `miasto`, `tel`, `email`, `PESEL`, `login`, `haslo`) VALUES ('".$_POST['imie']."','".$_POST['nazwisko']."','".$_POST['ulica']."','".$_POST['numer']."','".$_POST['kp']."','".$_POST['miasto']."','".$_POST['tel']."','".$_POST['email']."','".$_POST['pesel']."','".$login1."','".$_POST['haslo']."')";
                     $result4=mysqli_query($connect,$query4);
