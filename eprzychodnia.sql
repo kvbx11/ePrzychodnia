@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 06, 2025 at 07:42 PM
+-- Generation Time: Feb 09, 2025 at 06:48 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -32,9 +32,16 @@ CREATE TABLE `badania` (
   `id_lekarza` int(10) UNSIGNED DEFAULT NULL,
   `opis_badania` text DEFAULT NULL,
   `diagnoza` text DEFAULT NULL,
-  `recepta` tinyint(1) DEFAULT NULL,
+  `recepta` text DEFAULT NULL,
   `data` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `badania`
+--
+
+INSERT INTO `badania` (`id_pacjenta`, `id_lekarza`, `opis_badania`, `diagnoza`, `recepta`, `data`) VALUES
+(3, 7, 'bol kolana pacjenta wykonanie badan ruchomosci', 'stluczenie kolana', 'ketonal', '2024-10-10');
 
 -- --------------------------------------------------------
 
@@ -56,6 +63,14 @@ CREATE TABLE `pacjenci` (
   `login` char(9) DEFAULT NULL,
   `haslo` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `pacjenci`
+--
+
+INSERT INTO `pacjenci` (`id_pacjenta`, `imie`, `nazwisko`, `ulica`, `nr_domu`, `kp`, `miasto`, `tel`, `email`, `PESEL`, `login`, `haslo`) VALUES
+(1, 'Urszula', 'Krawiec', 'Pomorska', '14C/8', '51--00', 'Wałbrzych', '123456789', 'ulakraw@o2.pl', '84128463210', 'urskra632', 'ulkakrawiec10'),
+(3, 'Anna', 'Kowalska', 'Zamkowa', '13/3', '61-001', 'Poznań', '987654321', 'akowalska@vlopoznan.pl', '84128463210', 'annkow632', 'ankowalska10');
 
 -- --------------------------------------------------------
 
@@ -82,7 +97,27 @@ CREATE TABLE `pracownik` (
 
 INSERT INTO `pracownik` (`id_lekarza`, `Imie`, `Nazwisko`, `Specjalizacja`, `PWZ`, `tel`, `email`, `stanowisko`, `login`, `haslo`) VALUES
 (2, 'Admin', 'Admin', NULL, NULL, NULL, 'administracja@eprzychodnia.pl', 'admin', 'admadm120', 'admin123'),
-(3, 'Jan', 'Nowak', 'Ortopeda', '0001WZ-2', '123456789', 'jannowak@eprzychodnia.pl', 'lekarz', 'jannow110', 'Janek10');
+(7, 'Jan', 'Kowal', 'Onkolog', 'WZ213-779', '987654321', 'jankowal@gmail.com', 'lekarz', 'jankow355', 'janek10');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `rezerwacje`
+--
+
+CREATE TABLE `rezerwacje` (
+  `id_pacjenta` int(10) UNSIGNED DEFAULT NULL,
+  `data` date DEFAULT NULL,
+  `godzina` time DEFAULT NULL,
+  `specjalizacja_lekarza` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `rezerwacje`
+--
+
+INSERT INTO `rezerwacje` (`id_pacjenta`, `data`, `godzina`, `specjalizacja_lekarza`) VALUES
+(1, '2025-02-25', '18:40:00', 'Proktolog');
 
 -- --------------------------------------------------------
 
@@ -109,7 +144,7 @@ INSERT INTO `uprawnienia` (`stanowisko`, `zaloz_konto`, `usun_konto`, `dane_pacj
 ('lekarz', 0, 0, 1, 1, 0, 1),
 ('pielegniarz', 0, 0, 0, 1, 0, 0),
 ('recepcjonista', 1, 0, 0, 0, 1, 0),
-('pacjent', 0, 0, 1, 0, 1, 1);
+('pacjent', 0, 0, 0, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -128,7 +163,7 @@ CREATE TABLE `zalogowani` (
 --
 
 INSERT INTO `zalogowani` (`login`, `haslo`, `kto`) VALUES
-('admadm120', 'f865b53623b121fd34ee5426c792e5c33af8c227', 'admin');
+('annkow632', 'e64d0550468c07936609c3a6edf563b968a308b2', 'pacjent');
 
 --
 -- Indeksy dla zrzutów tabel
@@ -164,10 +199,16 @@ ALTER TABLE `uprawnienia`
 --
 
 --
+-- AUTO_INCREMENT for table `pacjenci`
+--
+ALTER TABLE `pacjenci`
+  MODIFY `id_pacjenta` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT for table `pracownik`
 --
 ALTER TABLE `pracownik`
-  MODIFY `id_lekarza` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_lekarza` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
