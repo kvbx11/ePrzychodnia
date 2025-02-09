@@ -70,48 +70,42 @@
                         }
                     }
                 }
-                mysqli_close($connect);
+
+            
             ?>
         </nav>
         
         <main>
             <div class="index-content">
-                <?php
-                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
-
-                if (!$connect) {
-                    die("Połączenie z bazą danych nie powiodło się.");
-                }
-                $query="select `login` from `zalogowani`";
-                $result=mysqli_query($connect, $query);
-                $row=mysqli_fetch_assoc($result);
-                $login_zal=$row['login'];
-
-                $query3="select `id_lekarza` from `pracownik` where `login`='".$login_zal."';";
-                $result3=mysqli_query($connect,$query3);
-                $row=mysqli_fetch_assoc($result3);
-                echo "Twoje ID: ".$row['id_lekarza']."<br>";
-                ?>
-                <br>
-                <form method="post">
-                    <input type="number" name="id_pacjenta" placeholder="ID Pacjenta"> <br>
-                    <input type="number" name="id_lekarza" placeholder="ID Lekarza"> <br>
-                    <textarea name="opis" placeholder="Opis Badania"></textarea> <br>
-                    <textarea name="diagnoza" placeholder="Diagnoza"></textarea> <br>
-                    <input type="text" name="recepta" placeholder="Recepta"> <br>
-                    <input type="date" name="data"><br><br>
-                    <input type="submit" value="Dodaj wizytę" name="przeslij">
+                <form method='post'>
+                    <input type='text' name='login' placeholder='Twój login'><br>
+                    <input type='password' name='haslo' placeholder='Twoje hasło'><br><br>
+                    <input type='submit' name='przeslij' value='Zaloguj się!'>
                 </form>
-            </div>
+                <br><br>
+                <?php
+                    if(isset($_POST['przeslij'])){
+                        $log = $_POST['login'];
+                        $haslo = sha1($_POST['haslo']);
 
-            <?php
-            if(isset($_POST['przeslij'])){
-                $query4="INSERT INTO `badania`(`id_pacjenta`, `id_lekarza`, `opis_badania`, `diagnoza`, `recepta`, `data`) VALUES ('".$_POST['id_pacjenta']."','".$_POST['id_lekarza']."','".$_POST['opis']."','".$_POST['diagnoza']."','".$_POST['recepta']."','".$_POST['data']."')";
-                $result4=mysqli_query($connect,$query4);
-    
-                echo "Dodano wizytę!";
-            }
-            ?>
+                        $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+                        if(!$connect) {
+                            die("Połączenie z bazą danych nie powiodło się.");
+                        }
+
+                        $query_1 = "SELECT `haslo` FROM `pacjenci` WHERE `login` = '".$log."';";
+                        $res1=mysqli_query($connect, $query_1);
+                        $row=mysqli_fetch_assoc($res1);
+                        if(sha1($row['haslo']) == $haslo){
+                            $query_2 = "INSERT INTO `zalogowani` (`login`, `haslo`, `kto`) VALUES ('".$log."', '".$haslo."', 'pacjent')";
+                            $res2=mysqli_query($connect,$query_2);
+                            echo "Zalogowano pomyślnie jako: Pacjent";
+                        } else {
+                            echo "Błąd logowania. Spróbuj ponownie.";
+                        }
+                    }
+                ?>
+            </div>
         </main>
     </div>
     

@@ -11,6 +11,28 @@
     <header>
         <div class="w-10"></div> 
         <h1 class="text-xl font-bold text-center flex-1"><a href="index.php">ePrzychodnia</a></h1>
+        <?php
+            $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+
+            if (!$connect) {
+                die("Połączenie z bazą danych nie powiodło się.");
+            }
+
+            $query0 = "SELECT `login` FROM `zalogowani` LIMIT 1";
+            $result = mysqli_query($connect, $query0);
+
+            if ($result && mysqli_num_rows($result) > 0) {
+                $row = mysqli_fetch_assoc($result);
+                $log = $row['login'];
+                echo "Zalogowano jako: " . htmlspecialchars($log);
+            } else {
+                echo "Nie zalogowano.";
+            }
+            
+
+
+            mysqli_close($connect);
+        ?>
         <div>
             <form action="zaloguj.php">
                 <button class="icon-button"><i class="fa-solid fa-user"></i></button> 
@@ -18,6 +40,29 @@
             <form action="wyloguj.php">
                 <button class="icon-button"><i class="fa fa-sign-out"></i></button>
             </form>
+            <?php
+                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+
+                if (!$connect) {
+                    die("Połączenie z bazą danych nie powiodło się.");
+                }
+
+                $query1 = "SELECT `kto` FROM `zalogowani`";
+                $result1 = mysqli_query($connect, $query1);
+
+                if ($row = mysqli_fetch_assoc($result1)) {
+                    $kto = $row['kto']; 
+                    
+                    if ($kto == "admin" || $kto == "recepcjonista") {
+                        echo '            
+                        <form action="ustawienia.php">
+                            <button type="submit" class="icon-button"><i class="fa-solid fa-cog"></i></button> 
+                        </form>';
+                    }
+                }
+
+                mysqli_close($connect);
+                ?>
         </div>
     </header>
     
@@ -70,50 +115,20 @@
                         }
                     }
                 }
-
             
             ?>
         </nav>
         
         <main>
             <div class="index-content">
-                <form method='post'>
-                    <input type='text' name='login' placeholder='Twój login'><br>
-                    <input type='password' name='haslo' placeholder='Twoje hasło'><br><br>
-                    <input type='submit' name='przeslij' value='Zaloguj się!'>
+            <p>Jestem:</p>
+                <form method="post" action="zaloguj_pracownik.php">
+                    <input type="submit" name="lekarz" value="Lekarzem">
                 </form>
-                <br><br>
-                <?php
-                    if(isset($_POST['przeslij'])){
-                        $log = $_POST['login'];
-                        $haslo = sha1($_POST['haslo']);
-
-                        $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
-                        if(!$connect) {
-                            die("Połączenie z bazą danych nie powiodło się.");
-                        }
-
-                        $query_1 = "SELECT `haslo`, `stanowisko` FROM `pracownik` WHERE `login` = ?";
-                        $stmt_1 = mysqli_prepare($connect, $query_1);
-                        mysqli_stmt_bind_param($stmt_1, 's', $log);
-                        mysqli_stmt_execute($stmt_1);
-                        mysqli_stmt_bind_result($stmt_1, $hashed_password, $status);
-                        mysqli_stmt_fetch($stmt_1);
-                        mysqli_stmt_close($stmt_1);
-
-                        if(sha1($hashed_password) == $haslo){
-                            $query_2 = "INSERT INTO `zalogowani` (`login`, `haslo`, `kto`) VALUES (?, ?, ?)";
-                            $stmt_2 = mysqli_prepare($connect, $query_2);
-                            mysqli_stmt_bind_param($stmt_2, 'sss', $log, $haslo, $status);
-                            mysqli_stmt_execute($stmt_2);
-                            mysqli_stmt_close($stmt_2);
-
-                            echo "Zalogowano pomyślnie jako: ".$status;
-                        } else {
-                            echo "Błąd logowania. Spróbuj ponownie.";
-                        }
-                    }
-                ?>
+                <br>
+                <form method="post" action="zaloguj_pacjent.php">
+                    <input type="submit" name="pacjent" value="Pacjentem">
+                </form>
             </div>
         </main>
     </div>

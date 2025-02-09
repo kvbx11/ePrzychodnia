@@ -73,12 +73,6 @@ mysqli_close($connect);
                 if (!$connect) {
                     die("Połączenie z bazą danych nie powiodło się.");
                 }
-
-                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
-
-                if (!$connect) {
-                    die("Połączenie z bazą danych nie powiodło się.");
-                }
                 $query0="select * from `zalogowani`";
                 $result0=mysqli_query($connect,$query0);
 
