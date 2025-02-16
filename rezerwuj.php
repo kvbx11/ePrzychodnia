@@ -9,7 +9,42 @@
 </head>
 <body>
     <header>
-        <div class="w-10"></div> 
+    <div id="data"></div> 
+    <script>
+        czas();
+        function czas(){
+
+            var data=new Date();
+
+            var godzina=data.getHours();
+            if(godzina<10){
+                godzina='0'+godzina;
+            }
+            var minuta=data.getMinutes();
+            if(minuta<10){
+                minuta='0'+minuta;
+            }
+            var sekunda=data.getSeconds();
+            if(sekunda<10){
+                sekunda='0'+sekunda;
+            }
+
+            var rok = data.getFullYear();
+            var miesiac=data.getMonth();
+            if(miesiac<10){
+                miesiac='0'+miesiac;
+            }
+            var dzien=data.getDate();
+            if(dzien<10){
+                dzien='0'+dzien;
+            }
+
+            var teraz_godzina= godzina+":"+minuta+":"+sekunda;
+            var teraz_data=dzien+"."+miesiac+"."+rok;
+            document.getElementById("data").innerHTML="Aktualny czas: <br>"+teraz_godzina+"<br>"+teraz_data;
+        }
+        setInterval(czas,1000);
+    </script>
         <h1 class="text-xl font-bold text-center flex-1"><a href="index.php">ePrzychodnia</a></h1>
         <div>
             <form action="zaloguj.php">
@@ -79,38 +114,35 @@
         
         <main>
             <div class="index-content">
-                <form method="post">
-                    <h2>Wybierz datę wizyty:</h2>
-                    <input type="text" name="imie" placeholder="Imię"><br>
-                    <input type="text" name="nazwisko" placeholder="Nazwisko"> <br>
-                    Data: <input type="date" name="data"> <br>
-                    Godzina: <input type="time" name="godzina"><br>
-                    <input type="text" name="specjalizacja" placeholder="Specjalizacja lekarza"><br><br>
-                    <input type="submit" value="Zarezerwuj wizytę!" name="przeslij">
-                </form>
+                <form action="rezerwuj_1.php" method="post">
+
+
                 <?php
-                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
 
-                if (!$connect) {
-                    die("Połączenie z bazą danych nie powiodło się.");
-                }
-                if(isset($_POST['przeslij'])){
-                    $data=$_POST['data'];
-                    $godzina=$_POST['godzina'];
-                    $query0="select `id_pacjenta` from `pacjenci` where `imie`='".$_POST['imie']."' and `nazwisko`='".$_POST['nazwisko']."';";
-                    $res0=mysqli_query($connect,$query0);
-                    $row=mysqli_fetch_assoc($res0);
-                    $id=$row['id_pacjenta'];
+                    if (!$connect) {
+                        die("Połączenie z bazą danych nie powiodło się: " . mysqli_connect_error());
+                    }
 
-                    $query="INSERT INTO `rezerwacje`(`id_pacjenta`, `data`, `godzina`, `specjalizacja_lekarza`) VALUES ('".$id."', '".$_POST['data']."', '".$_POST['godzina']."', '".$_POST['specjalizacja']."');";
-                    $result=mysqli_query($connect,$query);
+                    $sql = "SELECT `id_lekarza`, `Imie`, `Nazwisko`, `Specjalizacja` FROM `pracownik` WHERE `id_lekarza` IS NOT NULL AND `id_lekarza` != 2";
+                    $query = mysqli_query($connect, $sql);
 
-                    echo "Pomyślnie zarezerwowano wizytę!";
-                }
+                    if (!$query) {
+                        die("Błąd zapytania: " . mysqli_error($connect));
+                    }
 
+                    echo "<label for='lekarz'>Wybierz lekarza</label>\n";
+                    echo "<select name='lekarz' id='lek'>";
 
+                    while ($row = mysqli_fetch_assoc($query)) {
+                        echo "<option value='" . $row['id_lekarza'] . "'>" . htmlspecialchars($row['Imie']) . " " . htmlspecialchars($row['Nazwisko']) . " - " . htmlspecialchars($row['Specjalizacja']) . "</option>";
+                    }
 
+                    echo "</select>";
                 ?>
+                <br>
+                <input type="submit" value="Dalej">
+                </form>
         </main>
     </div>
     

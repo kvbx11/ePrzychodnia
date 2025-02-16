@@ -46,63 +46,19 @@
         setInterval(czas,1000);
     </script>
         <h1 class="text-xl font-bold text-center flex-1"><a href="index.php">ePrzychodnia</a></h1>
-        <?php
-            $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
-
-            if (!$connect) {
-                die("Połączenie z bazą danych nie powiodło się.");
-            }
-
-            $query0 = "SELECT `login` FROM `zalogowani` LIMIT 1";
-            $result = mysqli_query($connect, $query0);
-
-            if ($result && mysqli_num_rows($result) > 0) {
-                $row = mysqli_fetch_assoc($result);
-                $log = $row['login'];
-                echo "Zalogowano jako: " . htmlspecialchars($log);
-            } else {
-                echo "Nie zalogowano.";
-            }
-            
-
-
-            mysqli_close($connect);
-        ?>
         <div>
-        <form action="zaloguj.php">
-    <button class="icon-button"><i class="fa-solid fa-user"></i></button> 
-</form>
-<form action="wyloguj.php">
-    <button class="icon-button"><i class="fa fa-sign-out"></i></button>
-</form>
-<?php
-$connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
-
-if (!$connect) {
-    die("Połączenie z bazą danych nie powiodło się.");
-}
-
-$query1 = "SELECT `kto` FROM `zalogowani`";
-$result1 = mysqli_query($connect, $query1);
-
-if ($row = mysqli_fetch_assoc($result1)) { // Pobranie pierwszego wiersza
-    $kto = $row['kto']; // Przypisanie wartości kolumny 'kto'
-    
-    if ($kto == "admin" || $kto == "recepcjonista") {
-        echo '            
-        <form action="ustawienia.php">
-            <button type="submit" class="icon-button"><i class="fa-solid fa-cog"></i></button> 
-        </form>';
-    }
-}
-
-mysqli_close($connect);
-?>
+            <form action="zaloguj.php">
+                <button class="icon-button"><i class="fa-solid fa-user"></i></button> 
+            </form>
+            <form action="wyloguj.php">
+                <button class="icon-button"><i class="fa fa-sign-out"></i></button>
+            </form>
+        </div>
     </header>
     
     <div style="display: flex; flex: 1;">
         <nav>
-            <?php
+        <?php
                 $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
 
                 if (!$connect) {
@@ -158,53 +114,66 @@ mysqli_close($connect);
         
         <main>
             <div class="index-content">
+                <form action="rezerwuj_1.php" method="post">
+
+
                 <?php
-                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
 
-                    if (!$connect) {
-                        die("Połączenie z bazą danych nie powiodło się.");
+                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+
+                if (!$connect) {
+                    die("Połączenie z bazą danych nie powiodło się: " . mysqli_connect_error());
+                }
+
+                $id_lekarz = 7;
+
+                $sql = "SELECT * FROM `terminarz` WHERE `dostepnosc` = true AND `id_lekarza` = $id_lekarz ORDER BY `data`, `godzina`;";
+                $query = mysqli_query($connect, $sql);
+
+                echo "<form method='POST' action='rezerwacja.php'>";
+                echo "Dostępne terminy: <br>";
+
+                $czas = date("H:i:s");
+                $data = date("Y-m-d");
+                $teraz = strtotime("$data $czas");
+                $maxTermin = strtotime("+5 days", $teraz);
+
+                $i = 0;
+                $terminy_w_ciagu_5_dni = [];
+
+                while ($row = mysqli_fetch_assoc($query)) {
+                    $termin = strtotime($row['data'] . ' ' . $row['godzina']);
+
+                    if ($termin > $teraz && $termin <= $maxTermin) {
+                        echo "<input type='radio' name='termin' value='" . $row['data'] . " " . $row['godzina'] . "'> ";
+                        echo $row['data'] . " - " . $row['godzina'] . "<br>";
+                        $terminy_w_ciagu_5_dni[] = $row;
+                        $i++;
                     }
+                }
 
-                    $query="select `kto`,`login` from `zalogowani`";
-                    $res=mysqli_query($connect,$query);
-                    $row=mysqli_fetch_assoc($res);
-
-                    if($row['kto']=="pacjent"){
-                        echo "<h1>Zaplanowane wizyty</h1>";
-                        $query6="select `id_pacjenta` from `pacjenci` where `login`='".$row['login']."'";
-                        $res6=mysqli_query($connect,$query6);
-                        $row3=mysqli_fetch_assoc($res6); //id lekarza
-                        $query1="select `data`, `godzina`, `specjalizacja_lekarza` from `rezerwacje` where `id_pacjenta`=".$row3['id_pacjenta'].";";
-                        $res1=mysqli_query($connect,$query1);
-                        $row1=mysqli_fetch_assoc($res1);
-                        if(mysqli_num_rows($res1)>0){
-                            echo "Data: ".$row1['data'].", Godzina: ".$row1['godzina'].", Specjalizacja lekarza: ".$row1['specjalizacja_lekarza']."";
+                if ($i == 0) {
+                    echo "Brak dostępnych wizyt w ciągu najbliższych 5 dni!<br>";
+                    echo "<br>Propozycja innych terminów: <br>";
+                
+                    $query1 = "SELECT * FROM `terminarz` WHERE `dostepnosc` = true AND `id_lekarza` = $id_lekarz ORDER BY `data`, `godzina` LIMIT 5;";
+                    $res = mysqli_query($connect, $query1);
+                
+                    if (mysqli_num_rows($res) > 0) { 
+                        echo "<form method='post' action='rezerwuj_2.php'>";
+                
+                        while ($row = mysqli_fetch_assoc($res)) {
+                            echo "<input type='radio' name='termin' value='" . $row['data'] . " " . $row['godzina'] . "'> ";
+                            echo $row['data'] . " - " . $row['godzina'] . "<br>";
                         }
-                        else{
-                            echo "Nie masz zaplanowanych wizyt!";
-                        }
+                
+                        echo "<br><input type='submit' value='Zarezerwuj termin'>";
+                        echo "</form>";
+                    } else {
+                        echo "Brak dostępnych terminów!";
                     }
-
-                    if($row['kto']=="lekarz"){
-                        $query7="select `specjalizacja` from `pracownik` where `login`='".$row['login']."';";
-                        $res7=mysqli_query($connect,$query7);
-                        $row4=mysqli_fetch_assoc($res7); 
-
-                        echo '<h1>Zaplanowane wizyty dla Twojej specjalizacji</h1>';
-                        $query5="select `id_pacjenta`,`data`,`godzina` from `rezerwacje` where `specjalizacja_lekarza`='".$row4['specjalizacja']."';";
-                        $res5=mysqli_query($connect,$query5);
-                        $row3=mysqli_fetch_assoc($res5);
-                        if(mysqli_num_rows($res5)>0){
-                            echo "ID Pacjenta: ".$row3['id_pacjenta'].", Data: ".$row3['data'].", Godzina: ".$row['godzina']."<br><br>";
-                        }
-                        else{
-                            echo "Brak zaplanowanych wizyt!";
-                        }
-
-                    }
-                    
+                }
                 ?>
-            </div>
         </main>
     </div>
     

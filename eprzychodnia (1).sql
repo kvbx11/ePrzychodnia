@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 09, 2025 at 09:08 PM
+-- Generation Time: Feb 16, 2025 at 07:46 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -113,12 +113,26 @@ CREATE TABLE `rezerwacje` (
   `specjalizacja_lekarza` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `rezerwacje`
+-- Struktura tabeli dla tabeli `terminarz`
 --
 
-INSERT INTO `rezerwacje` (`id_pacjenta`, `data`, `godzina`, `specjalizacja_lekarza`) VALUES
-(1, '2025-02-25', '18:40:00', 'Proktolog');
+CREATE TABLE `terminarz` (
+  `data` date DEFAULT NULL,
+  `godzina` time DEFAULT NULL,
+  `dostepnosc` tinyint(1) DEFAULT NULL,
+  `specjalizacja` varchar(100) DEFAULT NULL,
+  `id_lekarza` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `terminarz`
+--
+
+INSERT INTO `terminarz` (`data`, `godzina`, `dostepnosc`, `specjalizacja`, `id_lekarza`) VALUES
+('2025-03-17', '12:00:00', 1, 'onkolog', 7);
 
 -- --------------------------------------------------------
 
@@ -161,6 +175,13 @@ CREATE TABLE `zalogowani` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
+-- Dumping data for table `zalogowani`
+--
+
+INSERT INTO `zalogowani` (`login`, `haslo`, `kto`) VALUES
+('jankra619', 'a2e107333bc9e0262bd0908e0702f8bbcc67d594', 'pacjent');
+
+--
 -- Indeksy dla zrzutów tabel
 --
 
@@ -182,6 +203,12 @@ ALTER TABLE `pacjenci`
 --
 ALTER TABLE `pracownik`
   ADD PRIMARY KEY (`id_lekarza`,`stanowisko`);
+
+--
+-- Indeksy dla tabeli `terminarz`
+--
+ALTER TABLE `terminarz`
+  ADD PRIMARY KEY (`id_lekarza`);
 
 --
 -- Indeksy dla tabeli `uprawnienia`
