@@ -114,6 +114,9 @@
         
         <main>
             <div class="index-content">
+                <form action="rezerwuj_1.php" method="post">
+
+
                 <?php
 
                 $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
@@ -121,28 +124,59 @@
                 if (!$connect) {
                     die("Połączenie z bazą danych nie powiodło się: " . mysqli_connect_error());
                 }
-                session_start();
-                $sql="select `kto` from `zalogowani`";
-                $query=mysqli_query($connect,$sql);
-                $row=mysqli_fetch_assoc($query);
 
-                if($row['kto']=="recepcjonista"){
-                    echo '        <form action="rezerwuj_1.php" method="post">
-            <input type="number" name="id_pacjenta"><br>
-            <input type="submit" value="Dalej">
-        </form>;';
+                $id_lekarz = 7;
+
+                $sql = "SELECT * FROM `terminarz` WHERE `dostepnosc` = true AND `id_lekarza` = $id_lekarz ORDER BY `data`, `godzina`;";
+                $query = mysqli_query($connect, $sql);
+
+                echo "<form method='POST' action='rezerwacja.php'>";
+                echo "Dostępne terminy: <br>";
+
+                $czas = date("H:i:s");
+                $data = date("Y-m-d");
+                $teraz = strtotime("$data $czas");
+                $maxTermin = strtotime("+5 days", $teraz);
+
+                $i = 0;
+                $terminy_w_ciagu_5_dni = [];
+
+                while ($row = mysqli_fetch_assoc($query)) {
+                    $termin = strtotime($row['data'] . ' ' . $row['godzina']);
+
+                    if ($termin > $teraz && $termin <= $maxTermin) {
+                        echo "<input type='radio' name='termin' value='" . $row['data'] . " " . $row['godzina'] . "'> ";
+                        echo $row['data'] . " - " . $row['godzina'] . "<br>";
+                        $terminy_w_ciagu_5_dni[] = $row;
+                        $i++;
+                    }
                 }
-                if($row['kto']=="pacjent"){
-                    $sql="select `id_pacjenta` from `pacjenci` inner join `zalogowani` on `zalogowani`.`login`=`pacjenci`.`login`";
-                    $query=mysqli_query($connect,$sql);
-                    $row=mysqli_fetch_assoc($query);
-                    $_SESSION['id_pacjent_rejestracja']=$row['id_pacjenta'];
-                    header("Location: rezerwuj_1.php");
+
+                if ($i == 0) {
+                    echo "Brak dostępnych wizyt w ciągu najbliższych 5 dni!<br>";
+                    echo "<br>Propozycja innych terminów: <br>";
+                
+                    $query1 = "SELECT * FROM `terminarz` WHERE `dostepnosc` = true AND `id_lekarza` = $id_lekarz ORDER BY `data`, `godzina` LIMIT 5;";
+                    $res = mysqli_query($connect, $query1);
+                
+                    if (mysqli_num_rows($res) > 0) { 
+                        echo "<form method='post' action='rezerwuj_2.php'>";
+                
+                        while ($row = mysqli_fetch_assoc($res)) {
+                            echo "<input type='radio' name='termin' value='" . $row['data'] . " " . $row['godzina'] . "'> ";
+                            echo $row['data'] . " - " . $row['godzina'] . "<br>";
+                        }
+                
+                        echo "<br><input type='submit' value='Zarezerwuj termin'>";
+                        echo "</form>";
+                    } else {
+                        echo "Brak dostępnych terminów!";
+                    }
                 }
                 ?>
         </main>
-
     </div>
+    
     <footer>
         <p>&copy; Jakub Kłódkowski 2025</p>
     </footer>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 16, 2025 at 07:46 PM
+-- Generation Time: Feb 17, 2025 at 09:33 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -110,8 +110,15 @@ CREATE TABLE `rezerwacje` (
   `id_pacjenta` int(10) UNSIGNED DEFAULT NULL,
   `data` date DEFAULT NULL,
   `godzina` time DEFAULT NULL,
-  `specjalizacja_lekarza` varchar(100) DEFAULT NULL
+  `id_lekarza` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `rezerwacje`
+--
+
+INSERT INTO `rezerwacje` (`id_pacjenta`, `data`, `godzina`, `id_lekarza`) VALUES
+(4, '2025-03-17', '12:00:00', 7);
 
 -- --------------------------------------------------------
 
@@ -173,13 +180,6 @@ CREATE TABLE `zalogowani` (
   `haslo` varchar(100) DEFAULT NULL,
   `kto` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `zalogowani`
---
-
-INSERT INTO `zalogowani` (`login`, `haslo`, `kto`) VALUES
-('jankra619', 'a2e107333bc9e0262bd0908e0702f8bbcc67d594', 'pacjent');
 
 --
 -- Indeksy dla zrzutów tabel

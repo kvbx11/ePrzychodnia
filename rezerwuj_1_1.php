@@ -126,22 +126,46 @@
                 $query=mysqli_query($connect,$sql);
                 $row=mysqli_fetch_assoc($query);
 
-                if($row['kto']=="recepcjonista"){
-                    echo '        <form action="rezerwuj_1.php" method="post">
-            <input type="number" name="id_pacjenta"><br>
-            <input type="submit" value="Dalej">
-        </form>;';
+                $_SESSION['id_lekarza_rezerwacja']=$_POST['id_lekarz'];
+
+
+                $sql = "SELECT * FROM `terminarz` WHERE `dostepnosc` = true AND `id_lekarza` = ".$_SESSION['id_lekarza_rezerwacja']." ORDER BY `data`, `godzina`;";
+                $query = mysqli_query($connect, $sql);
+
+                echo "<form method='POST' action='rezerwacja.php'>";
+                echo "Dostępne terminy: <br>";
+
+                $czas = date("H:i:s");
+                $data = date("Y-m-d");
+                $teraz = strtotime("$data $czas");
+                $maxTermin = strtotime("+5 days", $teraz);
+
+                $i = 0;
+                $terminy_w_ciagu_5_dni = [];
+
+                while ($row = mysqli_fetch_assoc($query)) {
+                    $termin = strtotime($row['data'] . ' ' . $row['godzina']);
+
+                    if ($termin > $teraz && $termin <= $maxTermin) {
+                        echo "<input type='radio' name='termin' value='" . $row['data'] . " " . $row['godzina'] . "'> ";
+                        echo $row['data'] . " - " . $row['godzina'] . "<br>";
+                        $terminy_w_ciagu_5_dni[] = $row;
+                        $i++;
+                    }
                 }
-                if($row['kto']=="pacjent"){
-                    $sql="select `id_pacjenta` from `pacjenci` inner join `zalogowani` on `zalogowani`.`login`=`pacjenci`.`login`";
-                    $query=mysqli_query($connect,$sql);
-                    $row=mysqli_fetch_assoc($query);
-                    $_SESSION['id_pacjent_rejestracja']=$row['id_pacjenta'];
-                    header("Location: rezerwuj_1.php");
+                echo "</form>";
+
+                if ($i == 0) {
+                    echo "Brak dostępnych wizyt w ciągu najbliższych 5 dni!<br>";
+                    echo '    <form action="rezerwuj_2.php" method="post">
+                                <input type="submit" value="Późniejsze terminy dla wybranego lekarza">
+                            </form>
+                            <form action="rezerwuj_3.php" method="post">
+                                <input type="submit" value="Wybierz innego lekarza tej samej specjalizacji">
+                            </form>';
                 }
                 ?>
         </main>
-
     </div>
     <footer>
         <p>&copy; Jakub Kłódkowski 2025</p>
