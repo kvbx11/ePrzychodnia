@@ -120,6 +120,13 @@
                 if (!$connect) {
                     die("Połączenie z bazą danych nie powiodło się.");
                 }
+
+                $sql0="select `kto` from `zalogowani`";
+                $qry=mysqli_query($connect,$sql0);
+                $row0=mysqli_fetch_assoc($qry);
+                if($row0['kto']=="lekarz"){
+                    header("Location: historia_lekarz.php");
+                }
                 $query="select `login` from `zalogowani`";
                 $result=mysqli_query($connect,$query);
                 $row=mysqli_fetch_assoc($result);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 17, 2025 at 09:33 PM
+-- Generation Time: Feb 21, 2025 at 10:47 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -60,7 +60,7 @@ CREATE TABLE `pacjenci` (
   `tel` char(9) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `PESEL` char(11) DEFAULT NULL,
-  `login` char(9) DEFAULT NULL,
+  `login` char(11) DEFAULT NULL,
   `haslo` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -69,9 +69,9 @@ CREATE TABLE `pacjenci` (
 --
 
 INSERT INTO `pacjenci` (`id_pacjenta`, `imie`, `nazwisko`, `ulica`, `nr_domu`, `kp`, `miasto`, `tel`, `email`, `PESEL`, `login`, `haslo`) VALUES
-(1, 'Urszula', 'Krawiec', 'Pomorska', '14C/8', '51--00', 'Wałbrzych', '123456789', 'ulakraw@o2.pl', '84128463210', 'urskra632', 'ulkakrawiec10'),
-(3, 'Anna', 'Kowalska', 'Zamkowa', '13/3', '61-001', 'Poznań', '987654321', 'akowalska@vlopoznan.pl', '84128463210', 'annkow632', 'ankowalska10'),
-(4, 'Janusz', 'Kraska', 'Magazynowa', '10/2', '45-089', 'Radom', '123456789', 'kraskajanek@op.pl', '21874361985', 'jankra619', 'janekk123');
+(1, 'Urszula', 'Krawiec', 'Pomorska', '14C/8', '51--00', 'Wałbrzych', '123456789', 'ulakraw@o2.pl', '84128463210', 'urskra63210', 'ulkakrawiec10'),
+(3, 'Anna', 'Kowalska', 'Zamkowa', '13/3', '61-001', 'Poznań', '987654321', 'akowalska@vlopoznan.pl', '84128463210', 'annkow63210', 'ankowalska10'),
+(4, 'Janusz', 'Kraska', 'Magazynowa', '10/2', '45-089', 'Radom', '123456789', 'kraskajanek@op.pl', '21874361985', 'jankra61985', 'janekk123');
 
 -- --------------------------------------------------------
 
@@ -98,7 +98,9 @@ CREATE TABLE `pracownik` (
 
 INSERT INTO `pracownik` (`id_lekarza`, `Imie`, `Nazwisko`, `Specjalizacja`, `PWZ`, `tel`, `email`, `stanowisko`, `login`, `haslo`) VALUES
 (2, 'Admin', 'Admin', NULL, NULL, NULL, 'administracja@eprzychodnia.pl', 'admin', 'admadm120', 'admin123'),
-(7, 'Jan', 'Kowal', 'Onkolog', 'WZ213-779', '987654321', 'jankowal@gmail.com', 'lekarz', 'jankow355', 'janek10');
+(7, 'Jan', 'Kowal', 'Onkolog', 'WZ213-779', '987654321', 'jankowal@gmail.com', 'lekarz', 'jankow355', 'janek10'),
+(8, 'Jonasz', 'Krause', 'Pediatria', 'WZ211-7', '129034901', 'jonasz.krause@wp.pl', 'recepcjonista', 'jonkra325', 'Jonasz1010'),
+(9, 'Janusz', 'Kowalski', 'Onkolog', 'WZ213-778', '987654222', 'jankowal@gmail.com', 'lekarz', 'jankow781', 'janusz10');
 
 -- --------------------------------------------------------
 
@@ -118,7 +120,12 @@ CREATE TABLE `rezerwacje` (
 --
 
 INSERT INTO `rezerwacje` (`id_pacjenta`, `data`, `godzina`, `id_lekarza`) VALUES
-(4, '2025-03-17', '12:00:00', 7);
+(3, '2025-03-17', '12:00:00', 7),
+(3, '2025-12-10', '12:30:00', 7),
+(3, '2025-02-22', '12:30:00', 0),
+(3, '2025-02-22', '12:30:00', 0),
+(3, '2025-02-22', '12:30:00', 0),
+(3, '2025-02-22', '12:30:00', 9);
 
 -- --------------------------------------------------------
 
@@ -131,7 +138,7 @@ CREATE TABLE `terminarz` (
   `godzina` time DEFAULT NULL,
   `dostepnosc` tinyint(1) DEFAULT NULL,
   `specjalizacja` varchar(100) DEFAULT NULL,
-  `id_lekarza` int(10) UNSIGNED NOT NULL
+  `id_lekarza` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -139,7 +146,7 @@ CREATE TABLE `terminarz` (
 --
 
 INSERT INTO `terminarz` (`data`, `godzina`, `dostepnosc`, `specjalizacja`, `id_lekarza`) VALUES
-('2025-03-17', '12:00:00', 1, 'onkolog', 7);
+('2025-02-22', '12:30:00', 0, 'onkolog', 9);
 
 -- --------------------------------------------------------
 
@@ -176,7 +183,7 @@ INSERT INTO `uprawnienia` (`stanowisko`, `zaloz_konto`, `usun_konto`, `dane_pacj
 --
 
 CREATE TABLE `zalogowani` (
-  `login` char(9) DEFAULT NULL,
+  `login` char(11) DEFAULT NULL,
   `haslo` varchar(100) DEFAULT NULL,
   `kto` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -205,12 +212,6 @@ ALTER TABLE `pracownik`
   ADD PRIMARY KEY (`id_lekarza`,`stanowisko`);
 
 --
--- Indeksy dla tabeli `terminarz`
---
-ALTER TABLE `terminarz`
-  ADD PRIMARY KEY (`id_lekarza`);
-
---
 -- Indeksy dla tabeli `uprawnienia`
 --
 ALTER TABLE `uprawnienia`
@@ -230,7 +231,7 @@ ALTER TABLE `pacjenci`
 -- AUTO_INCREMENT for table `pracownik`
 --
 ALTER TABLE `pracownik`
-  MODIFY `id_lekarza` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_lekarza` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables

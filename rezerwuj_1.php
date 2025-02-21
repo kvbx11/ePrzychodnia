@@ -122,18 +122,18 @@
                     if (!$connect) {
                         die("Połączenie z bazą danych nie powiodło się: " . mysqli_connect_error());
                     }
-
-                    $sql = "SELECT `id_lekarza`, `Imie`, `Nazwisko`, `Specjalizacja` FROM `pracownik` WHERE `id_lekarza` IS NOT NULL AND `id_lekarza` != 2";
+                    session_start();
+                    $sql = "SELECT `id_lekarza`, `Imie`, `Nazwisko`, `Specjalizacja` FROM `pracownik` WHERE (`id_lekarza` IS NOT NULL AND `id_lekarza` != 2) && `pracownik`.`stanowisko`='lekarz'";
                     $query = mysqli_query($connect, $sql);
 
                     if (!$query) {
                         die("Błąd zapytania: " . mysqli_error($connect));
                     }
-
                     echo "Wybierz lekarza <br>";
                     echo "<form action='rezerwuj_1_1.php' method='post'>";
                     while ($row = mysqli_fetch_assoc($query)) {
-                        echo "<input type='radio' name='id_lekarz' value='" . $row['id_lekarza'] . "'>" . htmlspecialchars($row['Imie']) . " " . htmlspecialchars($row['Nazwisko']) . " - " . htmlspecialchars($row['Specjalizacja']) . "</input>";
+                        $_SESSION['specjalizacja']=$row['Specjalizacja'];
+                        echo "<input type='radio' name='id_lekarz' value='" . $row['id_lekarza'] . "'>" . htmlspecialchars($row['Imie']) . " " . htmlspecialchars($row['Nazwisko']) . " - " . htmlspecialchars($row['Specjalizacja']) . "</input> <br>";
                     }
                 ?>
                 <br>

@@ -113,51 +113,37 @@
         </nav>
         
         <main>
-            <div class="index-content">
+
             <?php
-$connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
 
-if (!$connect) {
-    die("Połączenie z bazą danych nie powiodło się: " . mysqli_connect_error());
-}
-
-session_start();
-
-// Pobranie informacji o zalogowanym użytkowniku
-$sql = "SELECT `kto`, `login` FROM `zalogowani` LIMIT 1";
-$query = mysqli_query($connect, $sql);
-$row = mysqli_fetch_assoc($query);
-
-
-$kto = $row['kto'];
-$login = $row['login'];
-
-if ($kto == "recepcjonista") {
-    echo '<form action="rezerwuj_1.php" method="post">
-            <input type="number" name="id_pacjenta" required><br>
-            <input type="submit" value="Dalej">
-          </form>';
-} else if ($kto == "pacjent") {
-    $sql = "SELECT `id_pacjenta` FROM `pacjenci` WHERE `login` = ?";
-    $stmt = mysqli_prepare($connect, $sql);
-    mysqli_stmt_bind_param($stmt, "s", $login);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $pacjent = mysqli_fetch_assoc($result);
-
-    if ($pacjent) {
-        $_SESSION['id_pacjent_rejestracja'] = $pacjent['id_pacjenta'];
-        header("Location: rezerwuj_1.php");
-    } else {
-        echo "Błąd: Nie znaleziono pacjenta.";
-    }
-}
-
-mysqli_close($connect);
-?>
+                if (!$connect) {
+                    die("Połączenie z bazą danych nie powiodło się.");
+                }
+                session_start();
+                $id_pacjent=$_SESSION['id_pacjenta_historia'];
+                $query0="select `imie`, `nazwisko` from `pacjenci` where `id_pacjenta`=".$id_pacjent.";";
+                $res0=mysqli_query($connect,$query0);
+                $row0=mysqli_fetch_assoc($res0);
+                echo "<h2>Historia badań: ".$row0['imie']." ".$row0['nazwisko']."</h2>";
+                $query2="select `imie`,`nazwisko`,`opis_badania`,`diagnoza`,`recepta`,`data` from `badania` inner join `pracownik` on `pracownik`.`id_lekarza`=`badania`.`id_lekarza` where `id_pacjenta`='".$id_pacjent."';";
+                    $res2=mysqli_query($connect,$query2);
+                    $row2=mysqli_fetch_assoc($res2);
+                    if(mysqli_num_rows($res2)>0){
+                        echo "Lekarz: ".$row2['imie']." ".$row2['nazwisko'].", Opis wykonywanego badania: ".$row2['opis_badania'].", Diagnoza: ".$row2['diagnoza'].", Recepta: ".$row2['recepta'].", Data badania: ".$row2['data']."<br><br>"; 
+                    }
+                    else{
+                        echo "Brak dostępnej historii badań!";
+                    }
+            
+            
+            
+            
+            ?>
+                
         </main>
-
     </div>
+    
     <footer>
         <p>&copy; Jakub Kłódkowski 2025</p>
     </footer>

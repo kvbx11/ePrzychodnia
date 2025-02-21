@@ -159,6 +159,7 @@
                         echo "<form method='post' action='rezerwuj_2_1.php'>";
                 
                         while ($row = mysqli_fetch_assoc($res)) {
+                            $_SESSION['godzina']=$row['godzina'];
                             echo "<input type='radio' name='termin' value='" . $row['data'] . " " . $row['godzina'] . "'> ";
                             echo $row['data'] . " - " . $row['godzina'] . "<br>";
                         }
@@ -167,9 +168,13 @@
                         echo "</form>";
                     } else {
                         echo "Brak dostępnych terminów!";
+                        echo '               <form action="rezerwuj_3.php" method="post">
+                    <input type="submit" value="Zarezerwuj wizytę u innego lekarza!">
+                </form>';
                     }
                 }
                 ?>
+
         </main>
     </div>
     
