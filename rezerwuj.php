@@ -9,7 +9,42 @@
 </head>
 <body>
     <header>
-        <div class="w-10"></div> 
+    <div id="data"></div> 
+    <script>
+        czas();
+        function czas(){
+
+            var data=new Date();
+
+            var godzina=data.getHours();
+            if(godzina<10){
+                godzina='0'+godzina;
+            }
+            var minuta=data.getMinutes();
+            if(minuta<10){
+                minuta='0'+minuta;
+            }
+            var sekunda=data.getSeconds();
+            if(sekunda<10){
+                sekunda='0'+sekunda;
+            }
+
+            var rok = data.getFullYear();
+            var miesiac=data.getMonth();
+            if(miesiac<10){
+                miesiac='0'+miesiac;
+            }
+            var dzien=data.getDate();
+            if(dzien<10){
+                dzien='0'+dzien;
+            }
+
+            var teraz_godzina= godzina+":"+minuta+":"+sekunda;
+            var teraz_data=dzien+"."+miesiac+"."+rok;
+            document.getElementById("data").innerHTML="Aktualny czas: <br>"+teraz_godzina+"<br>"+teraz_data;
+        }
+        setInterval(czas,1000);
+    </script>
         <h1 class="text-xl font-bold text-center flex-1"><a href="index.php">ePrzychodnia</a></h1>
         <div>
             <form action="zaloguj.php">
@@ -68,6 +103,9 @@
                         if($przegladaj_historie==1){
                             echo "<p><a href='historia.php'>Przeglądaj historię badań</a></p>";
                         }
+                        if($row['przegladaj_rezerwacje']==1){
+                            echo "<p><a href='przegladaj_rezerwacje.php'>Przeglądaj rezerwacje</a></p>";
+                        }
                     }
                 }
                 mysqli_close($connect);
@@ -76,41 +114,35 @@
         
         <main>
             <div class="index-content">
-                <form method="post">
-                    <h2>Wybierz datę wizyty:</h2>
-                    <input type="text" name="imie" placeholder="Imię"><br>
-                    <input type="text" name="nazwisko" placeholder="Nazwisko"> <br>
-                    Data: <input type="date" name="data"> <br>
-                    Godzina: <input type="time" name="godzina"><br>
-                    <input type="text" name="specjalizacja" placeholder="Specjalizacja lekarza"><br><br>
-                    <input type="submit" value="Zarezerwuj wizytę!" name="przeslij">
-                </form>
                 <?php
+
                 $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
 
                 if (!$connect) {
-                    die("Połączenie z bazą danych nie powiodło się.");
+                    die("Połączenie z bazą danych nie powiodło się: " . mysqli_connect_error());
                 }
-                if(isset($_POST['przeslij'])){
-                    $data=$_POST['data'];
-                    $godzina=$_POST['godzina'];
-                    $query0="select `id_pacjenta` from `pacjenci` where `imie`='".$_POST['imie']."' and `nazwisko`='".$_POST['nazwisko']."';";
-                    $res0=mysqli_query($connect,$query0);
-                    $row=mysqli_fetch_assoc($res0);
-                    $id=$row['id_pacjenta'];
+                session_start();
+                $sql="select `kto` from `zalogowani`";
+                $query=mysqli_query($connect,$sql);
+                $row=mysqli_fetch_assoc($query);
 
-                    $query="INSERT INTO `rezerwacje`(`id_pacjenta`, `data`, `godzina`, `specjalizacja_lekarza`) VALUES ('".$id."', '".$_POST['data']."', '".$_POST['godzina']."', '".$_POST['specjalizacja']."');";
-                    $result=mysqli_query($connect,$query);
-
-                    echo "Pomyślnie zarezerwowano wizytę!";
+                if($row['kto']=="recepcjonista"){
+                    echo '        <form action="rezerwuj_1.php" method="post">
+            <input type="number" name="id_pacjenta"><br>
+            <input type="submit" value="Dalej">
+        </form>;';
                 }
-
-
-
+                if($row['kto']=="pacjent"){
+                    $sql="select `id_pacjenta` from `pacjenci` inner join `zalogowani` on `zalogowani`.`login`=`pacjenci`.`login`";
+                    $query=mysqli_query($connect,$sql);
+                    $row=mysqli_fetch_assoc($query);
+                    $_SESSION['id_pacjent_rejestracja']=$row['id_pacjenta'];
+                    header("Location: rezerwuj_1.php");
+                }
                 ?>
         </main>
+
     </div>
-    
     <footer>
         <p>&copy; Jakub Kłódkowski 2025</p>
     </footer>

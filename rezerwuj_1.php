@@ -114,44 +114,31 @@
         
         <main>
             <div class="index-content">
+
+
                 <?php
-                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
 
-                if (!$connect) {
-                    die("Połączenie z bazą danych nie powiodło się.");
-                }
-                $query="select `login` from `zalogowani`";
-                $result=mysqli_query($connect,$query);
-                $row=mysqli_fetch_assoc($result);
-                $login=$row['login'];
+                    if (!$connect) {
+                        die("Połączenie z bazą danych nie powiodło się: " . mysqli_connect_error());
+                    }
 
-                $query0="select `imie`, `nazwisko` from `pacjenci` where `login`='".$login."';";
-                $res0=mysqli_query($connect,$query0);
-                $row=mysqli_fetch_assoc($res0);
-                $imie=$row['imie'];
-                $nazw=$row['nazwisko'];
+                    $sql = "SELECT `id_lekarza`, `Imie`, `Nazwisko`, `Specjalizacja` FROM `pracownik` WHERE `id_lekarza` IS NOT NULL AND `id_lekarza` != 2";
+                    $query = mysqli_query($connect, $sql);
 
-                echo "<h2>Historia badań dla ".$imie." ".$nazw."</h2>";
+                    if (!$query) {
+                        die("Błąd zapytania: " . mysqli_error($connect));
+                    }
 
-
-                $query1="select `id_pacjenta` from `pacjenci` where `login`='".$login."';";
-                $result1=mysqli_query($connect,$query1);
-                $row1=mysqli_fetch_assoc($result1);
-                $id=$row1['id_pacjenta'];
-
-                
-                $query2="select `imie`,`nazwisko`,`opis_badania`,`diagnoza`,`recepta`,`data` from `badania` inner join `pracownik` on `pracownik`.`id_lekarza`=`badania`.`id_lekarza` where `id_pacjenta`='".$id."';";
-                $res2=mysqli_query($connect,$query2);
-                $row2=mysqli_fetch_assoc($res2);
-                if(mysqli_num_rows($res2)>0){
-                    echo "Lekarz: ".$row2['imie']." ".$row2['nazwisko'].", Opis wykonywanego badania: ".$row2['opis_badania'].", Diagnoza: ".$row2['diagnoza'].", Recepta: ".$row2['recepta'].", Data badania: ".$row2['data']."<br><br>"; 
-                }
-                else{
-                    echo "Brak dostępnej historii badań!";
-                }
-                
-
+                    echo "Wybierz lekarza <br>";
+                    echo "<form action='rezerwuj_1_1.php' method='post'>";
+                    while ($row = mysqli_fetch_assoc($query)) {
+                        echo "<input type='radio' name='id_lekarz' value='" . $row['id_lekarza'] . "'>" . htmlspecialchars($row['Imie']) . " " . htmlspecialchars($row['Nazwisko']) . " - " . htmlspecialchars($row['Specjalizacja']) . "</input>";
+                    }
                 ?>
+                <br>
+                <input type="submit" value="Dalej">
+                </form>
         </main>
     </div>
     

@@ -9,7 +9,42 @@
 </head>
 <body>
     <header>
-        <div class="w-10"></div> 
+    <div id="data"></div> 
+    <script>
+        czas();
+        function czas(){
+
+            var data=new Date();
+
+            var godzina=data.getHours();
+            if(godzina<10){
+                godzina='0'+godzina;
+            }
+            var minuta=data.getMinutes();
+            if(minuta<10){
+                minuta='0'+minuta;
+            }
+            var sekunda=data.getSeconds();
+            if(sekunda<10){
+                sekunda='0'+sekunda;
+            }
+
+            var rok = data.getFullYear();
+            var miesiac=data.getMonth();
+            if(miesiac<10){
+                miesiac='0'+miesiac;
+            }
+            var dzien=data.getDate();
+            if(dzien<10){
+                dzien='0'+dzien;
+            }
+
+            var teraz_godzina= godzina+":"+minuta+":"+sekunda;
+            var teraz_data=dzien+"."+miesiac+"."+rok;
+            document.getElementById("data").innerHTML="Aktualny czas: <br>"+teraz_godzina+"<br>"+teraz_data;
+        }
+        setInterval(czas,1000);
+    </script>
         <h1 class="text-xl font-bold text-center flex-1"><a href="index.php">ePrzychodnia</a></h1>
         <?php
             $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
@@ -112,6 +147,9 @@ mysqli_close($connect);
                         if($przegladaj_historie==1){
                             echo "<p><a href='historia.php'>Przeglądaj historię badań</a></p>";
                         }
+                        if($row['przegladaj_rezerwacje']==1){
+                            echo "<p><a href='przegladaj_rezerwacje.php'>Przeglądaj rezerwacje</a></p>";
+                        }
                     }
                 }
             
@@ -150,11 +188,12 @@ mysqli_close($connect);
                     $imie1 = $_POST['imie'];
                     $nazw1 = $_POST['nazwisko'];
                     $pesel = $_POST['pesel'];
-                    $login1 = strtolower(substr($imie1, 0, 3) . substr($nazw1, 0, 3) . substr($pesel, 5,strlen($pesel)));
+                    $login1 = strtolower(substr($imie1, 0, 3) . substr($nazw1, 0, 3) . substr($pesel, 6));
                     $haslo1 = $_POST['haslo'];
                     $query4 = "INSERT INTO `pacjenci` (`imie`, `nazwisko`, `ulica`, `nr_domu`, `kp`, `miasto`, `tel`, `email`, `PESEL`, `login`, `haslo`) VALUES ('".$_POST['imie']."','".$_POST['nazwisko']."','".$_POST['ulica']."','".$_POST['numer']."','".$_POST['kp']."','".$_POST['miasto']."','".$_POST['tel']."','".$_POST['email']."','".$_POST['pesel']."','".$login1."','".$_POST['haslo']."')";
                     $result4=mysqli_query($connect,$query4);
-                    echo "Pomyślnie dodano!";
+                    echo "Pomyślnie dodano! <br>";
+                    echo "Twój login: ".$login1."<br>";
                 }
 
                 mysqli_close($connect);

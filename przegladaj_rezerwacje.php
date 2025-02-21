@@ -46,19 +46,63 @@
         setInterval(czas,1000);
     </script>
         <h1 class="text-xl font-bold text-center flex-1"><a href="index.php">ePrzychodnia</a></h1>
+        <?php
+            $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+
+            if (!$connect) {
+                die("Połączenie z bazą danych nie powiodło się.");
+            }
+
+            $query0 = "SELECT `login` FROM `zalogowani` LIMIT 1";
+            $result = mysqli_query($connect, $query0);
+
+            if ($result && mysqli_num_rows($result) > 0) {
+                $row = mysqli_fetch_assoc($result);
+                $log = $row['login'];
+                echo "Zalogowano jako: " . htmlspecialchars($log);
+            } else {
+                echo "Nie zalogowano.";
+            }
+            
+
+
+            mysqli_close($connect);
+        ?>
         <div>
-            <form action="zaloguj.php">
-                <button class="icon-button"><i class="fa-solid fa-user"></i></button> 
-            </form>
-            <form action="wyloguj.php">
-                <button class="icon-button"><i class="fa fa-sign-out"></i></button>
-            </form>
-        </div>
+        <form action="zaloguj.php">
+    <button class="icon-button"><i class="fa-solid fa-user"></i></button> 
+</form>
+<form action="wyloguj.php">
+    <button class="icon-button"><i class="fa fa-sign-out"></i></button>
+</form>
+<?php
+$connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+
+if (!$connect) {
+    die("Połączenie z bazą danych nie powiodło się.");
+}
+
+$query1 = "SELECT `kto` FROM `zalogowani`";
+$result1 = mysqli_query($connect, $query1);
+
+if ($row = mysqli_fetch_assoc($result1)) {
+    $kto = $row['kto']; 
+    
+    if ($kto == "admin" || $kto == "recepcjonista") {
+        echo '            
+        <form action="ustawienia.php">
+            <button type="submit" class="icon-button"><i class="fa-solid fa-cog"></i></button> 
+        </form>';
+    }
+}
+
+mysqli_close($connect);
+?>
     </header>
     
     <div style="display: flex; flex: 1;">
         <nav>
-        <?php
+            <?php
                 $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
 
                 if (!$connect) {
@@ -115,43 +159,52 @@
         <main>
             <div class="index-content">
                 <?php
-                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
 
-                if (!$connect) {
-                    die("Połączenie z bazą danych nie powiodło się.");
-                }
-                $query="select `login` from `zalogowani`";
-                $result=mysqli_query($connect,$query);
-                $row=mysqli_fetch_assoc($result);
-                $login=$row['login'];
+                    if (!$connect) {
+                        die("Połączenie z bazą danych nie powiodło się.");
+                    }
 
-                $query0="select `imie`, `nazwisko` from `pacjenci` where `login`='".$login."';";
-                $res0=mysqli_query($connect,$query0);
-                $row=mysqli_fetch_assoc($res0);
-                $imie=$row['imie'];
-                $nazw=$row['nazwisko'];
+                    $query="select `kto`,`login` from `zalogowani`";
+                    $res=mysqli_query($connect,$query);
+                    $row=mysqli_fetch_assoc($res);
 
-                echo "<h2>Historia badań dla ".$imie." ".$nazw."</h2>";
+                    if($row['kto']=="pacjent"){
+                        echo "<h1>Zaplanowane wizyty</h1>";
+                        $query6="select `id_pacjenta` from `pacjenci` where `login`='".$row['login']."'";
+                        $res6=mysqli_query($connect,$query6);
+                        $row3=mysqli_fetch_assoc($res6); //id lekarza
+                        $query1="select `data`, `godzina`, `specjalizacja_lekarza` from `rezerwacje` where `id_pacjenta`=".$row3['id_pacjenta'].";";
+                        $res1=mysqli_query($connect,$query1);
+                        $row1=mysqli_fetch_assoc($res1);
+                        if(mysqli_num_rows($res1)>0){
+                            echo "Data: ".$row1['data'].", Godzina: ".$row1['godzina'].", Specjalizacja lekarza: ".$row1['specjalizacja_lekarza']."";
+                        }
+                        else{
+                            echo "Nie masz zaplanowanych wizyt!";
+                        }
+                    }
 
+                    if($row['kto']=="lekarz"){
+                        $query7="select `specjalizacja` from `pracownik` where `login`='".$row['login']."';";
+                        $res7=mysqli_query($connect,$query7);
+                        $row4=mysqli_fetch_assoc($res7); 
 
-                $query1="select `id_pacjenta` from `pacjenci` where `login`='".$login."';";
-                $result1=mysqli_query($connect,$query1);
-                $row1=mysqli_fetch_assoc($result1);
-                $id=$row1['id_pacjenta'];
+                        echo '<h1>Zaplanowane wizyty dla Twojej specjalizacji</h1>';
+                        $query5="select `id_pacjenta`,`data`,`godzina` from `rezerwacje` where `specjalizacja_lekarza`='".$row4['specjalizacja']."';";
+                        $res5=mysqli_query($connect,$query5);
+                        $row3=mysqli_fetch_assoc($res5);
+                        if(mysqli_num_rows($res5)>0){
+                            echo "ID Pacjenta: ".$row3['id_pacjenta'].", Data: ".$row3['data'].", Godzina: ".$row['godzina']."<br><br>";
+                        }
+                        else{
+                            echo "Brak zaplanowanych wizyt!";
+                        }
 
-                
-                $query2="select `imie`,`nazwisko`,`opis_badania`,`diagnoza`,`recepta`,`data` from `badania` inner join `pracownik` on `pracownik`.`id_lekarza`=`badania`.`id_lekarza` where `id_pacjenta`='".$id."';";
-                $res2=mysqli_query($connect,$query2);
-                $row2=mysqli_fetch_assoc($res2);
-                if(mysqli_num_rows($res2)>0){
-                    echo "Lekarz: ".$row2['imie']." ".$row2['nazwisko'].", Opis wykonywanego badania: ".$row2['opis_badania'].", Diagnoza: ".$row2['diagnoza'].", Recepta: ".$row2['recepta'].", Data badania: ".$row2['data']."<br><br>"; 
-                }
-                else{
-                    echo "Brak dostępnej historii badań!";
-                }
-                
-
+                    }
+                    
                 ?>
+            </div>
         </main>
     </div>
     

@@ -115,46 +115,58 @@
         <main>
             <div class="index-content">
                 <?php
+
                 $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
 
                 if (!$connect) {
-                    die("Połączenie z bazą danych nie powiodło się.");
+                    die("Połączenie z bazą danych nie powiodło się: " . mysqli_connect_error());
                 }
-                $query="select `login` from `zalogowani`";
-                $result=mysqli_query($connect,$query);
-                $row=mysqli_fetch_assoc($result);
-                $login=$row['login'];
+                session_start();
+                $sql="select `kto` from `zalogowani`";
+                $query=mysqli_query($connect,$sql);
+                $row=mysqli_fetch_assoc($query);
 
-                $query0="select `imie`, `nazwisko` from `pacjenci` where `login`='".$login."';";
-                $res0=mysqli_query($connect,$query0);
-                $row=mysqli_fetch_assoc($res0);
-                $imie=$row['imie'];
-                $nazw=$row['nazwisko'];
-
-                echo "<h2>Historia badań dla ".$imie." ".$nazw."</h2>";
+                $_SESSION['id_lekarza_rezerwacja']=$_POST['id_lekarz'];
 
 
-                $query1="select `id_pacjenta` from `pacjenci` where `login`='".$login."';";
-                $result1=mysqli_query($connect,$query1);
-                $row1=mysqli_fetch_assoc($result1);
-                $id=$row1['id_pacjenta'];
+                $sql = "SELECT * FROM `terminarz` WHERE `dostepnosc` = true AND `id_lekarza` = ".$_SESSION['id_lekarza_rezerwacja']." ORDER BY `data`, `godzina`;";
+                $query = mysqli_query($connect, $sql);
 
-                
-                $query2="select `imie`,`nazwisko`,`opis_badania`,`diagnoza`,`recepta`,`data` from `badania` inner join `pracownik` on `pracownik`.`id_lekarza`=`badania`.`id_lekarza` where `id_pacjenta`='".$id."';";
-                $res2=mysqli_query($connect,$query2);
-                $row2=mysqli_fetch_assoc($res2);
-                if(mysqli_num_rows($res2)>0){
-                    echo "Lekarz: ".$row2['imie']." ".$row2['nazwisko'].", Opis wykonywanego badania: ".$row2['opis_badania'].", Diagnoza: ".$row2['diagnoza'].", Recepta: ".$row2['recepta'].", Data badania: ".$row2['data']."<br><br>"; 
+                echo "<form method='POST' action='rezerwacja.php'>";
+                echo "Dostępne terminy: <br>";
+
+                $czas = date("H:i:s");
+                $data = date("Y-m-d");
+                $teraz = strtotime("$data $czas");
+                $maxTermin = strtotime("+5 days", $teraz);
+
+                $i = 0;
+                $terminy_w_ciagu_5_dni = [];
+
+                while ($row = mysqli_fetch_assoc($query)) {
+                    $termin = strtotime($row['data'] . ' ' . $row['godzina']);
+
+                    if ($termin > $teraz && $termin <= $maxTermin) {
+                        echo "<input type='radio' name='termin' value='" . $row['data'] . " " . $row['godzina'] . "'> ";
+                        echo $row['data'] . " - " . $row['godzina'] . "<br>";
+                        $terminy_w_ciagu_5_dni[] = $row;
+                        $i++;
+                    }
                 }
-                else{
-                    echo "Brak dostępnej historii badań!";
-                }
-                
+                echo "</form>";
 
+                if ($i == 0) {
+                    echo "Brak dostępnych wizyt w ciągu najbliższych 5 dni!<br>";
+                    echo '    <form action="rezerwuj_2.php" method="post">
+                                <input type="submit" value="Późniejsze terminy dla wybranego lekarza">
+                            </form>
+                            <form action="rezerwuj_3.php" method="post">
+                                <input type="submit" value="Wybierz innego lekarza tej samej specjalizacji">
+                            </form>';
+                }
                 ?>
         </main>
     </div>
-    
     <footer>
         <p>&copy; Jakub Kłódkowski 2025</p>
     </footer>

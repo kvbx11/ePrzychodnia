@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 19, 2025 at 08:45 AM
+-- Generation Time: Feb 17, 2025 at 09:33 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -60,7 +60,7 @@ CREATE TABLE `pacjenci` (
   `tel` char(9) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `PESEL` char(11) DEFAULT NULL,
-  `login` char(11) DEFAULT NULL,
+  `login` char(9) DEFAULT NULL,
   `haslo` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
@@ -71,13 +71,7 @@ CREATE TABLE `pacjenci` (
 INSERT INTO `pacjenci` (`id_pacjenta`, `imie`, `nazwisko`, `ulica`, `nr_domu`, `kp`, `miasto`, `tel`, `email`, `PESEL`, `login`, `haslo`) VALUES
 (1, 'Urszula', 'Krawiec', 'Pomorska', '14C/8', '51--00', 'Wałbrzych', '123456789', 'ulakraw@o2.pl', '84128463210', 'urskra632', 'ulkakrawiec10'),
 (3, 'Anna', 'Kowalska', 'Zamkowa', '13/3', '61-001', 'Poznań', '987654321', 'akowalska@vlopoznan.pl', '84128463210', 'annkow632', 'ankowalska10'),
-(4, 'Janusz', 'Kraska', 'Magazynowa', '10/2', '45-089', 'Radom', '123456789', 'kraskajanek@op.pl', '21874361985', 'jankra619', 'janekk123'),
-(5, 'WÅ‚adysÅ‚aw', 'Kosiak-Kamysz', 'Staszica', '10/2', '69-420', 'Kiekrz', '123456789', 'wladekpedal@gmail.com', '69696969696', 'wÅ‚kos696', 'pedalindoszef'),
-(6, 'Joannna', 'Kruk', '2137 hauussstrabbe', '10/2', '21-376', 'Krynica', '123456789', 'asiabasia@gmail.com', '123456789', 'joakru789', 'jaja1010'),
-(7, 'sigmaboy', 'stolarski', 'Poznanska', '10', '21-376', 'wygwizdow dolny', '123456789', 'sigmastolec@gmail.com', '12345678901', 'sigsto789', 'stolarzinio10'),
-(8, 'sigmaboy', 'stolarski', 'Poznanska', '10', '21-376', 'wygwizdow dolny', '123456789', 'sigmastolec@gmail.com', '12345678901', 'sigsto567', 'stolarzinio10'),
-(9, 'sigmaboy', 'stolarski', 'Poznanska', '10', '21-376', 'wygwizdow dolny', '123456789', 'sigmastolec@gmail.com', '12345678901', 'sigsto78901', 'stolarzinio10'),
-(10, 'sigmaboy', 'stolarski', 'Poznanska', '10', '21-376', 'wygwizdow dolny', '123456789', 'sigmastolec@gmail.com', '12345678901', 'sigsto78901', 'stolarzinio10');
+(4, 'Janusz', 'Kraska', 'Magazynowa', '10/2', '45-089', 'Radom', '123456789', 'kraskajanek@op.pl', '21874361985', 'jankra619', 'janekk123');
 
 -- --------------------------------------------------------
 
@@ -116,9 +110,15 @@ CREATE TABLE `rezerwacje` (
   `id_pacjenta` int(10) UNSIGNED DEFAULT NULL,
   `data` date DEFAULT NULL,
   `godzina` time DEFAULT NULL,
-  `specjalizacja_lekarza` varchar(100) DEFAULT NULL,
   `id_lekarza` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `rezerwacje`
+--
+
+INSERT INTO `rezerwacje` (`id_pacjenta`, `data`, `godzina`, `id_lekarza`) VALUES
+(4, '2025-03-17', '12:00:00', 7);
 
 -- --------------------------------------------------------
 
@@ -182,13 +182,6 @@ CREATE TABLE `zalogowani` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Dumping data for table `zalogowani`
---
-
-INSERT INTO `zalogowani` (`login`, `haslo`, `kto`) VALUES
-('admadm120', 'f865b53623b121fd34ee5426c792e5c33af8c227', 'admin');
-
---
 -- Indeksy dla zrzutów tabel
 --
 
@@ -231,7 +224,7 @@ ALTER TABLE `uprawnienia`
 -- AUTO_INCREMENT for table `pacjenci`
 --
 ALTER TABLE `pacjenci`
-  MODIFY `id_pacjenta` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_pacjenta` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `pracownik`
