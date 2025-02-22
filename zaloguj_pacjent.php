@@ -106,6 +106,15 @@
                         if($row['przegladaj_rezerwacje']==1){
                             echo "<p><a href='przegladaj_rezerwacje.php'>Przeglądaj rezerwacje</a></p>";
                         }
+                        if($row['ewizyta']==1){
+                            echo "<p><a href='chat.php'>Porozmawiaj Online!</a></p>";
+                        }
+                        if($row['napisz_recepte']==1){
+                            echo "<p><a href='zamow_recepte.php'>Wypisz receptę Online</a></p>";
+                        }
+                        if($row['potwierdz_recepte']==1){
+                            echo "<p><a href='zaakceptuj_recepte.php'>Zaakceptuj oczekujące recepty</a></p>";
+                        }
                     }
                 }
 

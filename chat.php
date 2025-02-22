@@ -44,7 +44,7 @@
             document.getElementById("data").innerHTML="Aktualny czas: <br>"+teraz_godzina+"<br>"+teraz_data;
         }
         setInterval(czas,1000);
-    </script> 
+    </script>
         <h1 class="text-xl font-bold text-center flex-1"><a href="index.php">ePrzychodnia</a></h1>
         <?php
             $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
@@ -166,25 +166,84 @@ mysqli_close($connect);
         </nav>
         
         <main>
-            <div class="index-content">
-                <?php
-                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+        <div class="index-content">
+    <div class="wiadomosci">
+    <?php
+$connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
 
-                    if (!$connect) {
-                        die("Połączenie z bazą danych nie powiodło się.");
-                    }
+if (!$connect) {
+    die("Połączenie z bazą danych nie powiodło się.");
+}
+$plik_nazwa = "chat.txt";
+$sql = "SELECT `kto`, `login` FROM `zalogowani` LIMIT 1";
+$qu = mysqli_query($connect, $sql);
+$row0 = mysqli_fetch_assoc($qu);
 
-                    
-                ?>
-                <p>Czyimi kontami chcesz zarządzać?</p>
-                <form action="zarzadzaj_kontami_pacjentow.php" method="post">
-                    <input type="submit" value="Pacjentów">
-                </form>
-                <br>
-                <form action="zarzadzaj_kontami_lekarzy.php" method="post">
-                    <input type="submit" value="Lekarzy">
-                </form>
-            </div>
+if (isset($_POST['zakoncz']) && $_POST['zakoncz'] === 'true' && $row0['kto'] === 'lekarz') {
+    file_put_contents($plik_nazwa, "");
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
+}
+
+if (file_exists($plik_nazwa)) {
+    $wiadomosci = file($plik_nazwa, FILE_IGNORE_NEW_LINES);
+    foreach ($wiadomosci as $wiadomosc) {
+        list($tresc, $login) = explode("|", $wiadomosc);
+        echo "<div class='wiadomosc'><strong>" . htmlspecialchars($login) . ":</strong> " . htmlspecialchars($tresc) . "</div>";
+    }
+}
+?>
+
+<form method="post">
+    <textarea name="wiadomosc" placeholder="Treść wiadomości"></textarea>
+    <input type="submit" value="Wyślij wiadomość" name="wyslij">
+</form>
+
+<?php
+if (isset($_POST['wyslij'])) {
+    $wiadomosc = trim($_POST['wiadomosc']);
+    
+    if (!empty($wiadomosc) && $row0) {
+        $imie = '';
+        $nazwisko = '';
+        
+        if ($row0['kto'] == "pacjent") {
+            $sql1 = "SELECT `imie`, `nazwisko` FROM `pacjenci` WHERE `login` = '{$row0['login']}'";
+        }
+        
+        if ($row0['kto'] == "lekarz") {
+            $sql1 = "SELECT `imie`, `nazwisko` FROM `pracownik` WHERE `login` = '{$row0['login']}'";
+        }
+        
+        if (isset($sql1)) {
+            $qu1 = mysqli_query($connect, $sql1);
+            $row1 = mysqli_fetch_assoc($qu1);
+            
+            if ($row1) {
+                $imie = $row1['imie'];
+                $nazwisko = $row1['nazwisko'];
+            }
+        }
+        
+        $login = $imie . " " . $nazwisko . ", " . $row0['kto'];
+        $zawartosc = $wiadomosc . "|" . $login . "\n";
+        
+        file_put_contents($plik_nazwa, $zawartosc, FILE_APPEND);
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    }
+}
+
+// Przycisk dla lekarza do zakończenia rozmowy i wyczyszczenia pliku
+if (isset($row0['kto']) && $row0['kto'] === 'lekarz') {
+    echo '<form method="post" onsubmit="return confirm(\'Czy na pewno chcesz zakończyć rozmowę i wyczyścić dane?\')">
+            <input type="hidden" name="zakoncz" value="true">
+            <input type="submit" value="Zakończ rozmowę i wyczyść dane">
+          </form>';
+}
+?>
+
+</div>
         </main>
     </div>
     

@@ -44,7 +44,7 @@
             document.getElementById("data").innerHTML="Aktualny czas: <br>"+teraz_godzina+"<br>"+teraz_data;
         }
         setInterval(czas,1000);
-    </script> 
+    </script>
         <h1 class="text-xl font-bold text-center flex-1"><a href="index.php">ePrzychodnia</a></h1>
         <?php
             $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
@@ -166,27 +166,11 @@ mysqli_close($connect);
         </nav>
         
         <main>
-            <div class="index-content">
-                <?php
-                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
-
-                    if (!$connect) {
-                        die("Połączenie z bazą danych nie powiodło się.");
-                    }
-
-                    
-                ?>
-                <p>Czyimi kontami chcesz zarządzać?</p>
-                <form action="zarzadzaj_kontami_pacjentow.php" method="post">
-                    <input type="submit" value="Pacjentów">
-                </form>
-                <br>
-                <form action="zarzadzaj_kontami_lekarzy.php" method="post">
-                    <input type="submit" value="Lekarzy">
-                </form>
-            </div>
+        <div class="index-content">
+            
+        </div>
         </main>
-    </div>
+
     
     <footer>
         <p>&copy; Jakub Kłódkowski 2025</p>
