@@ -167,7 +167,7 @@ mysqli_close($connect);
         
         <main>
         <div class="index-content">
-        
+        <h2>Porozmawiaj Online!</h2>
     <form method="post">
     <select name="id_lekarz">
         <option value="">Wybierz lekarza</option>

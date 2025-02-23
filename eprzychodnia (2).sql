@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 22, 2025 at 11:53 PM
+-- Generation Time: Feb 23, 2025 at 01:48 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -114,17 +114,19 @@ CREATE TABLE `recepty` (
   `nazwa leku` varchar(100) DEFAULT NULL,
   `dawka` varchar(100) DEFAULT NULL,
   `dawkowanie_pacjent` varchar(100) DEFAULT NULL,
-  `ilosc_opakowan` int(10) UNSIGNED DEFAULT NULL
+  `ilosc_opakowan` int(10) UNSIGNED DEFAULT NULL,
+  `zaakceptowane` tinyint(1) DEFAULT 0,
+  `id_recepty` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `recepty`
 --
 
-INSERT INTO `recepty` (`id_lekarza`, `id_pacjenta`, `nazwa leku`, `dawka`, `dawkowanie_pacjent`, `ilosc_opakowan`) VALUES
-(7, 3, '123', '132', '123', 123),
-(7, 3, '123', '132', '123', 123),
-(9, 3, 'Acodin', '10 tabletek', '2 tabletki dziennie', 1);
+INSERT INTO `recepty` (`id_lekarza`, `id_pacjenta`, `nazwa leku`, `dawka`, `dawkowanie_pacjent`, `ilosc_opakowan`, `zaakceptowane`, `id_recepty`) VALUES
+(7, 3, '123', '132', '123', 123, 0, 1),
+(7, 3, '123', '132', '123', 123, 0, 2),
+(9, 3, 'Acodin', '10 tabletek', '2 tabletki dziennie', 1, 0, 3);
 
 -- --------------------------------------------------------
 
@@ -216,13 +218,6 @@ CREATE TABLE `zalogowani` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Dumping data for table `zalogowani`
---
-
-INSERT INTO `zalogowani` (`login`, `haslo`, `kto`) VALUES
-('annkow63210', 'e64d0550468c07936609c3a6edf563b968a308b2', 'pacjent');
-
---
 -- Indeksy dla zrzutów tabel
 --
 
@@ -246,6 +241,12 @@ ALTER TABLE `pracownik`
   ADD PRIMARY KEY (`id_lekarza`,`stanowisko`);
 
 --
+-- Indeksy dla tabeli `recepty`
+--
+ALTER TABLE `recepty`
+  ADD PRIMARY KEY (`id_recepty`);
+
+--
 -- Indeksy dla tabeli `uprawnienia`
 --
 ALTER TABLE `uprawnienia`
@@ -266,6 +267,12 @@ ALTER TABLE `pacjenci`
 --
 ALTER TABLE `pracownik`
   MODIFY `id_lekarza` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `recepty`
+--
+ALTER TABLE `recepty`
+  MODIFY `id_recepty` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables

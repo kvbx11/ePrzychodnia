@@ -168,6 +168,7 @@ mysqli_close($connect);
         <main>
         <div class="index-content">
     <div class="wiadomosci">
+        <h2>Porozmawiaj Online!</h2>
     <?php
 $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
 
@@ -186,7 +187,7 @@ if (isset($_POST['zakoncz']) && $_POST['zakoncz'] === 'true' && $row0['kto'] ===
 }
 
 if (file_exists($plik_nazwa)) {
-    $wiadomosci = file($plik_nazwa, FILE_IGNORE_NEW_LINES);
+    $wiadomosci = file($plik_nazwa);
     foreach ($wiadomosci as $wiadomosc) {
         list($tresc, $login) = explode("|", $wiadomosc);
         echo "<div class='wiadomosc'><strong>" . htmlspecialchars($login) . ":</strong> " . htmlspecialchars($tresc) . "</div>";
@@ -234,7 +235,6 @@ if (isset($_POST['wyslij'])) {
     }
 }
 
-// Przycisk dla lekarza do zakończenia rozmowy i wyczyszczenia pliku
 if (isset($row0['kto']) && $row0['kto'] === 'lekarz') {
     echo '<form method="post" onsubmit="return confirm(\'Czy na pewno chcesz zakończyć rozmowę i wyczyścić dane?\')">
             <input type="hidden" name="zakoncz" value="true">
