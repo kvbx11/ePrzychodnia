@@ -30,22 +30,11 @@
         <main>
             <div class="index-content">
                 <?php
-                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
-
-                    if (!$connect) {
-                        die("Połączenie z bazą danych nie powiodło się.");
-                    }
-
-                    
+                echo "prace trwaja";
+                    //wystawione recepty 7 dni wstecz
+                
                 ?>
-                <p>Czyimi kontami chcesz zarządzać?</p>
-                <form action="zarzadzaj_kontami_pacjentow.php" method="post">
-                    <input type="submit" value="Pacjentów">
-                </form>
-                <br>
-                <form action="zarzadzaj_kontami_lekarzy.php" method="post">
-                    <input type="submit" value="Lekarzy">
-                </form>
+
             </div>
         </main>
     </div>
