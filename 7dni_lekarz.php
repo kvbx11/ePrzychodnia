@@ -29,10 +29,30 @@
         
         <main>
             <div class="index-content">
+                <h2>Wystawione recepty w ciągu ostatnich 7 dni: </h2>
                 <?php
-                echo "prace trwaja";
-                    //wystawione recepty 7 dni wstecz
-                
+                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+
+                    if (!$connect) {
+                        die("Połączenie z bazą danych nie powiodło się.");
+                    }
+                    $sql0="select `id_lekarza` from `pracownik` inner join `zalogowani` on `zalogowani`.`login`=`pracownik`.`login` ";
+                    $query=mysqli_query($connect,$sql0);
+                    $row=mysqli_fetch_assoc($query);
+                    $id_lekarza=$row['id_lekarza'];
+
+                    $sql="select * from `recepty` where `id_lekarza`=".$id_lekarza." and `data_akceptacji` is not null;";
+                    $query1=mysqli_query($connect,$sql);
+                    
+
+                    if(mysqli_num_rows($query1)>0){
+                        while($recepta=mysqli_fetch_assoc($query1)){
+                            echo "<p>ID Pacjenta: ".$recepta['id_pacjenta']." | Lek: " . $recepta['nazwa leku'] . " | Data akceptacji: " . $recepta['data_akceptacji'] . " | Dawka: ".$recepta['dawka']." | Dziennie: ".$recepta['dawkowanie_pacjent']."</p>";
+                        }
+                    }
+                    else{
+                        echo "Brak wystawionych recept w ciągu ostatnich 7 dni";
+                    }
                 ?>
 
             </div>

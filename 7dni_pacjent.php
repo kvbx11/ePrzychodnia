@@ -73,8 +73,6 @@
                         else{
                             echo "<h3>Brak wizyt lekarskich w ciągu ostatnich 7 dni!</h3>";
                         }
-
-                        // wyswietlanie rezerwacji  7dni wstecz
                     } 
                     else {
                         echo "<h3>Nie znaleziono pacjenta!</h3>";
