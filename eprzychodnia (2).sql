@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 23, 2025 at 01:48 PM
+-- Generation Time: Mar 04, 2025 at 09:12 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -116,17 +116,18 @@ CREATE TABLE `recepty` (
   `dawkowanie_pacjent` varchar(100) DEFAULT NULL,
   `ilosc_opakowan` int(10) UNSIGNED DEFAULT NULL,
   `zaakceptowane` tinyint(1) DEFAULT 0,
-  `id_recepty` int(10) UNSIGNED NOT NULL
+  `id_recepty` int(10) UNSIGNED NOT NULL,
+  `data_akceptacji` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `recepty`
 --
 
-INSERT INTO `recepty` (`id_lekarza`, `id_pacjenta`, `nazwa leku`, `dawka`, `dawkowanie_pacjent`, `ilosc_opakowan`, `zaakceptowane`, `id_recepty`) VALUES
-(7, 3, '123', '132', '123', 123, 0, 1),
-(7, 3, '123', '132', '123', 123, 0, 2),
-(9, 3, 'Acodin', '10 tabletek', '2 tabletki dziennie', 1, 0, 3);
+INSERT INTO `recepty` (`id_lekarza`, `id_pacjenta`, `nazwa leku`, `dawka`, `dawkowanie_pacjent`, `ilosc_opakowan`, `zaakceptowane`, `id_recepty`, `data_akceptacji`) VALUES
+(7, 3, '123', '132', '123', 123, 1, 1, '2025-03-03'),
+(7, 3, '123', '132', '123', 123, 1, 2, NULL),
+(9, 3, 'Acodin', '10 tabletek', '2 tabletki dziennie', 1, 0, 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -191,19 +192,21 @@ CREATE TABLE `uprawnienia` (
   `przegladaj_rezerwacje` tinyint(1) DEFAULT 0,
   `ewizyta` tinyint(1) DEFAULT 0,
   `napisz_recepte` tinyint(1) DEFAULT 0,
-  `potwierdz_recepte` tinyint(1) DEFAULT 0
+  `potwierdz_recepte` tinyint(1) DEFAULT 0,
+  `wyswietl_historie_7dni_lekarz` tinyint(1) DEFAULT 0,
+  `wyswietl_historie_7dni_pacjent` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `uprawnienia`
 --
 
-INSERT INTO `uprawnienia` (`stanowisko`, `zaloz_konto`, `usun_konto`, `dane_pacjentow`, `dodaj_wpis`, `rezerwuj`, `przegladaj_historie`, `przegladaj_rezerwacje`, `ewizyta`, `napisz_recepte`, `potwierdz_recepte`) VALUES
-('admin', 1, 1, 0, 0, 0, 0, 0, 0, 0, 0),
-('lekarz', 0, 0, 1, 1, 0, 1, 1, 1, 0, 1),
-('pielegniarz', 0, 0, 0, 1, 0, 0, 0, 0, 0, 0),
-('recepcjonista', 1, 0, 0, 0, 1, 0, 0, 0, 0, 0),
-('pacjent', 0, 0, 0, 0, 1, 1, 1, 1, 1, 0);
+INSERT INTO `uprawnienia` (`stanowisko`, `zaloz_konto`, `usun_konto`, `dane_pacjentow`, `dodaj_wpis`, `rezerwuj`, `przegladaj_historie`, `przegladaj_rezerwacje`, `ewizyta`, `napisz_recepte`, `potwierdz_recepte`, `wyswietl_historie_7dni_lekarz`, `wyswietl_historie_7dni_pacjent`) VALUES
+('admin', 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+('lekarz', 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0),
+('pielegniarz', 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0),
+('recepcjonista', 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0),
+('pacjent', 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1);
 
 -- --------------------------------------------------------
 
