@@ -29,13 +29,13 @@
         
         <main>
             <div class="index-content">
-            <p>Jestem:</p>
+            <p>Czyimi kontami chcesz zarządzać?</p>
                 <form method="post" action="lekarz.php">
-                    <input type="submit" name="lekarz" value="Lekarzem">
+                    <input type="submit" name="lekarz" value="Lekarzy">
                 </form>
                 <br>
                 <form method="post" action="pacjent.php">
-                    <input type="submit" name="pacjent" value="Pacjentem">
+                    <input type="submit" name="pacjent" value="Pacjentów">
                 </form>
             </div>
         </main>

@@ -1,69 +1,169 @@
 @font-face {
     font-family: "Noto Sans Regular";
     src: url('../eNFZ/Noto_Sans/static/NotoSans-Regular.ttf');
-
-    font-family: "Noto Sans Extralight";
-    src:url('../eNFZ/Noto_Sans/static/NotoSans-ExtraLight.ttf');
 }
+
+@font-face {
+    font-family: "Noto Sans Extralight";
+    src: url('../eNFZ/Noto_Sans/static/NotoSans-ExtraLight.ttf');
+}
+
 body {
     display: flex;
     flex-direction: column;
     height: 100vh;
     margin: 0;
-    width: 99vw;
+    width: 98vw;
     overflow-x: hidden;
+    font-family: "Noto Sans Regular", sans-serif;
+    background-color: #f9fafb;
 }
-/*index.html*/
+
 header {
     background-color: #1f2937;
     color: white;
-    padding: 10px;
+    padding: 16px 32px;
     width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    text-decoration: none;
-    box-shadow: 0px 8px 13px 0px gray;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+header h1 {
+    font-family: "Noto Sans Extralight", sans-serif;
+    font-size: 1.75rem;
+}
+
 nav {
-    background-color: #e5e7eb;
-    width: 256px;
-    padding: 16px;
+    background-color: #ffffff;
+    width: 240px;
+    padding: 20px;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.05);
+    border-right: 1px solid #e5e7eb;
 }
+
 main {
     flex: 1;
-    padding: 16px;
-    box-shadow: inset 14px 8px 13px 0px gray;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: inset 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin: 16px 0;
 }
+
 footer {
     background-color: #1f2937;
     color: white;
     text-align: center;
-    padding: 8px;
+    padding: 12px;
     width: 100%;
-    box-shadow: 0px -8px 13px 0px gray;
+    box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.1);
 }
+
 .icon-button {
     color: white;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     background: none;
     border: none;
     cursor: pointer;
 }
-h1>a{
+
+h1 > a {
     text-decoration: none;
     color: white;
 }
-p>a{
+
+p > a {
     text-decoration: none;
-    color: black;
+    color: #1f2937;
 }
+
 .wiadomosc {
-    padding: 10px;
-    border: 1px solid #ccc;
-    margin: 5px 0;
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    background-color: #ffffff;
+    border-radius: 8px;
+    margin: 8px 0;
 }
+
+/* Improved form styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+input,
+select,
+textarea,
+button {
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background-color: #ffffff;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Input and textarea focus effects */
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #1f2937;
+    box-shadow: 0 0 8px rgba(31, 41, 55, 0.3); /* Soft focus glow */
+    outline: none;
+}
+
 textarea {
-    width: 100%;
-    height: 100px;
+    height: 120px;
+    resize: vertical;
+    background-color: #f9fafb;
+}
+
+/* Button styles */
+button {
+    background-color: #1f2937;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background-color: #374151;
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+button:active {
+    background-color: #111827;
+    transform: translateY(1px); /* Slight press effect */
+}
+
+/* Adding label styles for a cleaner form */
+label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #1f2937;
+}
+
+/* Form error styles */
+input:invalid,
+select:invalid,
+textarea:invalid {
+    border-color: #ef4444;
+    background-color: #fee2e2;
+}
+
+/* Success state */
+input:valid,
+select:valid,
+textarea:valid {
+    border-color: #374151;
+    background-color: #f9fafb;
+}
+
+/* Padding and margins for better spacing in the form */
+form > * {
+    margin-bottom: 12px;
 }

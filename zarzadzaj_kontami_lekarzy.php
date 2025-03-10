@@ -46,7 +46,7 @@
                 <form action="zarzadzaj_kontami_lekarzy.php" method="post">
                     <input type="submit" value="Lekarzy">
                 </form>
-                <p>Wpisz numer konta do usuniecia</p>
+                <p>Wpisz ID konta do usuniecia</p>
                 <form action="usun_konto_pracownik.php" method="post">
                     <input type="number" name="id_konta" id="i0">
                     <input type="submit" value="Usuń">

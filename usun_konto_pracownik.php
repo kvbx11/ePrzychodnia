@@ -7,12 +7,11 @@ if (!$connect) {
 
 
 $idx=$_POST['id_konta'];
-echo $idx;
 
 $query="delete from `pracownik` where `id_lekarza`=".$idx.";";
-mysqli_query($connect,$query);
+$result=mysqli_query($connect,$query);
 
-//header("Location: zarzadzaj_kontami_lekarzy.php");
+header("Location: zarzadzaj_kontami_lekarzy.php");
 
 
 ?>
