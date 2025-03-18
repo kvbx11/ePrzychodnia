@@ -49,7 +49,7 @@ $login = $row['login'];
 
 if ($kto == "recepcjonista") {
     echo '<form action="rezerwuj_1.php" method="post">
-            <input type="number" name="id_pacjenta" required><br>
+            <input type="number" name="id_pacjenta" required placeholder="ID pacjenta"><br>
             <input type="submit" value="Dalej">
           </form>';
 } else if ($kto == "pacjent") {

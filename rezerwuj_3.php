@@ -46,13 +46,18 @@
 
                 echo "Wybierz lekarza <br>";
                 echo "<form action='rezerwuj_3_1.php' method='post'>";
-                while ($row = mysqli_fetch_assoc($query)) {
-                    echo "<input type='radio' name='id_lekarz' value='" . $row['id_lekarza'] . "'>" . htmlspecialchars($row['Imie']) . " " . htmlspecialchars($row['Nazwisko']) . " - " . htmlspecialchars($row['Specjalizacja']) . "</input>";
+                if(mysqli_num_rows($query)>0){
+                    while ($row = mysqli_fetch_assoc($query)) {
+                        echo "<input type='radio' name='id_lekarz' value='" . $row['id_lekarza'] . "'>" . htmlspecialchars($row['Imie']) . " " . htmlspecialchars($row['Nazwisko']) . " - " . htmlspecialchars($row['Specjalizacja']) . "</input>";
+                    }
+                    echo '<br> <input type="submit" value="Dalej">';
+                    echo '</form>';
                 }
+                else{
+                    echo "Przepraszamy, aktualnie nie ma żadnych lekarzy z wolnymi terminami";
+                }
+
                 ?>                
-                <br>
-                <input type="submit" value="Dalej">
-                </form>
         </main>
     </div>
     
