@@ -55,6 +55,7 @@
                             $query5 = "INSERT INTO `pracownik` (`Imie`, `Nazwisko`, `Specjalizacja`, `PWZ`, `tel`, `email`, `stanowisko`, `login`, `haslo`) VALUES ('".$_POST['imie']."','".$_POST['nazwisko']."','".$_POST['specjalizacja']."','".$_POST['PWZ']."','".$_POST['tel']."','".$_POST['email']."','".$_POST['stanowisko']."','".$login."', '".$_POST['haslo']."')";
                             $result5=mysqli_query($connect,$query5);
                             echo "Pomyślnie dodano!";
+                            echo "Login: ".$login;
                         }
                         
                         mysqli_close($connect);
