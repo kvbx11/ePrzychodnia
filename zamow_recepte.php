@@ -29,7 +29,7 @@
         
         <main>
         <div class="index-content">
-        <h2>Porozmawiaj Online!</h2>
+        <h2>Wypisz receptę Online!</h2>
     <form method="post">
     <select name="id_lekarz">
         <option value="">Wybierz lekarza</option>

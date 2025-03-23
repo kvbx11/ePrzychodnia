@@ -42,7 +42,7 @@ $sql = "SELECT `kto`, `login` FROM `zalogowani` LIMIT 1";
 $qu = mysqli_query($connect, $sql);
 $row0 = mysqli_fetch_assoc($qu);
 
-if (isset($_POST['zakoncz']) && $_POST['zakoncz'] === 'true' && $row0['kto'] === 'lekarz') {
+if (isset($_POST['zakoncz']) && $_POST['zakoncz'] === 'true' && $row0['kto'] === 'lekarz internista') {
     file_put_contents($plik_nazwa, "");
     header("Location: " . $_SERVER['PHP_SELF']);
     exit();
@@ -74,7 +74,7 @@ if (isset($_POST['wyslij'])) {
             $sql1 = "SELECT `imie`, `nazwisko` FROM `pacjenci` WHERE `login` = '{$row0['login']}'";
         }
         
-        if ($row0['kto'] == "lekarz") {
+        if ($row0['kto'] == "lekarz internista") {
             $sql1 = "SELECT `imie`, `nazwisko` FROM `pracownik` WHERE `login` = '{$row0['login']}'";
         }
         
@@ -97,7 +97,7 @@ if (isset($_POST['wyslij'])) {
     }
 }
 
-if (isset($row0['kto']) && $row0['kto'] === 'lekarz') {
+if (isset($row0['kto']) && $row0['kto'] === 'lekarz internista') {
     echo '<form method="post" onsubmit="return confirm(\'Czy na pewno chcesz zakończyć rozmowę i wyczyścić dane?\')">
             <input type="hidden" name="zakoncz" value="true">
             <input type="submit" value="Zakończ rozmowę i wyczyść dane">
