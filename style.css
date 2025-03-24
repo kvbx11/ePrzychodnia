@@ -87,7 +87,6 @@ p > a {
     margin: 8px 0;
 }
 
-/* Improved form styles */
 form {
     display: flex;
     flex-direction: column;
@@ -106,12 +105,12 @@ button {
     transition: all 0.3s ease-in-out;
 }
 
-/* Input and textarea focus effects */
+
 input:focus,
 select:focus,
 textarea:focus {
     border-color: #1f2937;
-    box-shadow: 0 0 8px rgba(31, 41, 55, 0.3); /* Soft focus glow */
+    box-shadow: 0 0 8px rgba(31, 41, 55, 0.3); 
     outline: none;
 }
 
@@ -121,7 +120,7 @@ textarea {
     background-color: #f9fafb;
 }
 
-/* Button styles */
+
 button {
     background-color: #1f2937;
     color: white;
@@ -132,22 +131,22 @@ button {
 
 button:hover {
     background-color: #374151;
-    transform: translateY(-2px); /* Slight lift effect */
+    transform: translateY(-2px);
 }
 
 button:active {
     background-color: #111827;
-    transform: translateY(1px); /* Slight press effect */
+    transform: translateY(1px); 
 }
 
-/* Adding label styles for a cleaner form */
+
 label {
     font-weight: 600;
     margin-bottom: 8px;
     color: #1f2937;
 }
 
-/* Form error styles */
+
 input:invalid,
 select:invalid,
 textarea:invalid {
@@ -155,7 +154,7 @@ textarea:invalid {
     background-color: #fee2e2;
 }
 
-/* Success state */
+
 input:valid,
 select:valid,
 textarea:valid {
@@ -163,7 +162,6 @@ textarea:valid {
     background-color: #f9fafb;
 }
 
-/* Padding and margins for better spacing in the form */
 form > * {
     margin-bottom: 12px;
 }

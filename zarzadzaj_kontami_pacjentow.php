@@ -40,7 +40,7 @@
                 ?>
                 <p>Czyimi kontami chcesz zarządzać?</p>
                 <form action="zarzadzaj_kontami_pacjentow.php" method="post">
-                    <input type="submit" value="Pacjentów">
+                    <input type="submit" value="Pacjentów"> <!--Wybor grupy uzytkownikow-->
                 </form>
                 <br>
                 <form action="zarzadzaj_kontami_lekarzy.php" method="post">
@@ -55,16 +55,16 @@
                 <br>
                 <br>
                 <?php
-                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia"); // polaczenie z baza danych
 
                     if (!$connect) {
                         die("Połączenie z bazą danych nie powiodło się.");
                     }
 
                     $query0="select * from `pacjenci`";
-                    $result0=mysqli_query($connect,$query0);
+                    $result0=mysqli_query($connect,$query0); // pobranie danych o pacjentach
 
-                    while($row=mysqli_fetch_assoc($result0)){
+                    while($row=mysqli_fetch_assoc($result0)){ // wyswietlenie danych o pacjentach
                         echo "ID: ".$row['id_pacjenta'].", Imię: ".$row['imie'].", Nazwisko: ".$row['nazwisko'].", Ulica: ".$row['ulica'].", Nr_domu: ".$row['nr_domu'].", Kod Pocztowy: ".$row['kp'].", Miasto: ".$row['miasto'].", Telefon: ".$row['tel'].", Email: ".$row['email'].", Login: ".$row['login'].", Hasło: ".$row['haslo']."<br><br>";
                     }
                     

@@ -31,7 +31,7 @@
             <div class="index-content">
                 <p>Zarejestruj konto lekarza na platformie ePrzychodnia</p>
                 <br>
-            <form method="post">
+            <form method="post"> <!--Formularz do rejestracji pracownika!-->
                             <input type="text" name="imie" placeholder="Imię"><br>
                             <input type="text" name="nazwisko" placeholder="Nazwisko"><br>
                             <input type="text" name="specjalizacja" placeholder="Specjalizacja"><br>
@@ -43,7 +43,7 @@
                             <input type="submit" value="Prześlij" name="submit">
                         </form>
                         <?php
-                        $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+                        $connect = mysqli_connect("localhost", "root", "", "eprzychodnia"); // polaczenie z baza danych
 
                         if (!$connect) {
                             die("Połączenie z bazą danych nie powiodło się.");
@@ -54,7 +54,7 @@
                             $login = strtolower(substr($imie, 0, 3) . substr($nazwisko, 0, 3) . rand(100, 999));
                             $query5 = "INSERT INTO `pracownik` (`Imie`, `Nazwisko`, `Specjalizacja`, `PWZ`, `tel`, `email`, `stanowisko`, `login`, `haslo`) VALUES ('".$_POST['imie']."','".$_POST['nazwisko']."','".$_POST['specjalizacja']."','".$_POST['PWZ']."','".$_POST['tel']."','".$_POST['email']."','".$_POST['stanowisko']."','".$login."', '".$_POST['haslo']."')";
                             $result5=mysqli_query($connect,$query5);
-                            echo "Pomyślnie dodano!";
+                            echo "Pomyślnie dodano!"; // dodanie pracownika do bd i wyswietlenie jego loginu
                             echo "Login: ".$login;
                         }
                         

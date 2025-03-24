@@ -29,17 +29,8 @@
         
         <main>
             <div class="index-content">
-                <?php
-                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
-
-                    if (!$connect) {
-                        die("Połączenie z bazą danych nie powiodło się.");
-                    }
-
-                    
-                ?>
                 <p>Czyimi kontami chcesz zarządzać?</p>
-                <form action="zarzadzaj_kontami_pacjentow.php" method="post">
+                <form action="zarzadzaj_kontami_pacjentow.php" method="post"> <!--Wybor grupy uzytkownikow-->
                     <input type="submit" value="Pacjentów">
                 </form>
                 <br>

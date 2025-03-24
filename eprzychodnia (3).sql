@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 04, 2025 at 09:12 PM
+-- Generation Time: Mar 24, 2025 at 08:28 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -100,7 +100,8 @@ INSERT INTO `pracownik` (`id_lekarza`, `Imie`, `Nazwisko`, `Specjalizacja`, `PWZ
 (2, 'Admin', 'Admin', NULL, NULL, NULL, 'administracja@eprzychodnia.pl', 'admin', 'admadm120', 'admin123'),
 (7, 'Jan', 'Kowal', 'Onkolog', 'WZ213-779', '987654321', 'jankowal@gmail.com', 'lekarz', 'jankow355', 'janek10'),
 (8, 'Jonasz', 'Krause', 'Pediatria', 'WZ211-7', '129034901', 'jonasz.krause@wp.pl', 'recepcjonista', 'jonkra325', 'Jonasz1010'),
-(9, 'Janusz', 'Kowalski', 'Onkolog', 'WZ213-778', '987654222', 'jankowal@gmail.com', 'lekarz', 'jankow781', 'janusz10');
+(10, 'Adolf', 'Kuźniak', 'administracja', 'ZW0-W4619', '999999999', 'a.kuzniak@wp.pl', 'pielegniarz', 'adokuz781', 'adolf2137'),
+(11, 'Jakub', 'Kolodziej', 'Onkolog', 'IZO94-1234', '999999999', 'jkolodziej@o2.pl', 'lekarz internista', 'jakkol253', 'Kolodziej2137');
 
 -- --------------------------------------------------------
 
@@ -127,7 +128,7 @@ CREATE TABLE `recepty` (
 INSERT INTO `recepty` (`id_lekarza`, `id_pacjenta`, `nazwa leku`, `dawka`, `dawkowanie_pacjent`, `ilosc_opakowan`, `zaakceptowane`, `id_recepty`, `data_akceptacji`) VALUES
 (7, 3, '123', '132', '123', 123, 1, 1, '2025-03-03'),
 (7, 3, '123', '132', '123', 123, 1, 2, NULL),
-(9, 3, 'Acodin', '10 tabletek', '2 tabletki dziennie', 1, 0, 3, NULL);
+(7, 3, 'Acodin', '10 tabletek', '2 tabletki dziennie', 1, 1, 3, '2025-03-18');
 
 -- --------------------------------------------------------
 
@@ -203,10 +204,11 @@ CREATE TABLE `uprawnienia` (
 
 INSERT INTO `uprawnienia` (`stanowisko`, `zaloz_konto`, `usun_konto`, `dane_pacjentow`, `dodaj_wpis`, `rezerwuj`, `przegladaj_historie`, `przegladaj_rezerwacje`, `ewizyta`, `napisz_recepte`, `potwierdz_recepte`, `wyswietl_historie_7dni_lekarz`, `wyswietl_historie_7dni_pacjent`) VALUES
 ('admin', 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-('lekarz', 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0),
 ('pielegniarz', 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0),
 ('recepcjonista', 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0),
-('pacjent', 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1);
+('pacjent', 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1),
+('lekarz internista', 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0),
+('lekarz', 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0);
 
 -- --------------------------------------------------------
 
@@ -219,6 +221,13 @@ CREATE TABLE `zalogowani` (
   `haslo` varchar(100) DEFAULT NULL,
   `kto` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `zalogowani`
+--
+
+INSERT INTO `zalogowani` (`login`, `haslo`, `kto`) VALUES
+('annkow63210', 'e64d0550468c07936609c3a6edf563b968a308b2', 'pacjent');
 
 --
 -- Indeksy dla zrzutów tabel
@@ -269,7 +278,7 @@ ALTER TABLE `pacjenci`
 -- AUTO_INCREMENT for table `pracownik`
 --
 ALTER TABLE `pracownik`
-  MODIFY `id_lekarza` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_lekarza` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `recepty`

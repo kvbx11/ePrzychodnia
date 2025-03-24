@@ -32,17 +32,17 @@
     <div class="wiadomosci">
         <h2>Porozmawiaj Online!</h2>
     <?php
-$connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+$connect = mysqli_connect("localhost", "root", "", "eprzychodnia"); // polaczenie z baza
 
 if (!$connect) {
     die("Połączenie z bazą danych nie powiodło się.");
 }
 $plik_nazwa = "chat.txt";
-$sql = "SELECT `kto`, `login` FROM `zalogowani` LIMIT 1";
+$sql = "SELECT `kto`, `login` FROM `zalogowani` LIMIT 1"; // pobranie danych
 $qu = mysqli_query($connect, $sql);
 $row0 = mysqli_fetch_assoc($qu);
 
-if (isset($_POST['zakoncz']) && $_POST['zakoncz'] === 'true' && $row0['kto'] === 'lekarz internista') {
+if (isset($_POST['zakoncz']) && $_POST['zakoncz'] === 'true' && $row0['kto'] === 'lekarz internista') { // dodanie danych do pliku
     file_put_contents($plik_nazwa, "");
     header("Location: " . $_SERVER['PHP_SELF']);
     exit();
@@ -52,7 +52,7 @@ if (file_exists($plik_nazwa)) {
     $wiadomosci = file($plik_nazwa);
     foreach ($wiadomosci as $wiadomosc) {
         list($tresc, $login) = explode("|", $wiadomosc);
-        echo "<div class='wiadomosc'><strong>" . htmlspecialchars($login) . ":</strong> " . htmlspecialchars($tresc) . "</div>";
+        echo "<div class='wiadomosc'><strong>" . htmlspecialchars($login) . ":</strong> " . htmlspecialchars($tresc) . "</div>"; // wyswietlenie wiadomosci
     }
 }
 ?>
@@ -91,13 +91,13 @@ if (isset($_POST['wyslij'])) {
         $login = $imie . " " . $nazwisko . ", " . $row0['kto'];
         $zawartosc = $wiadomosc . "|" . $login . "\n";
         
-        file_put_contents($plik_nazwa, $zawartosc, FILE_APPEND);
+        file_put_contents($plik_nazwa, $zawartosc, FILE_APPEND); // dodanie danych do pliku
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     }
 }
 
-if (isset($row0['kto']) && $row0['kto'] === 'lekarz internista') {
+if (isset($row0['kto']) && $row0['kto'] === 'lekarz internista') { // generowanie funkcjonalnosci do zakonczenia rozmowy
     echo '<form method="post" onsubmit="return confirm(\'Czy na pewno chcesz zakończyć rozmowę i wyczyścić dane?\')">
             <input type="hidden" name="zakoncz" value="true">
             <input type="submit" value="Zakończ rozmowę i wyczyść dane">

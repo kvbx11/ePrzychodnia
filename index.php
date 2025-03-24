@@ -29,7 +29,7 @@
         
         <main>
             <div class="index-content" style="margin-left: 30px">
-                <h2>Aktualności</h2>
+                <h2>Aktualności</h2> <!--blok aktualności!-->
                 <img src="przychodnia1.jpg" alt="przychodnia_wyremontowana">
                 <h3>Recepcja naszej przychodni została wyremontowana!</h3>
                 <p>Z radością informujemy, że zakończyliśmy remont recepcji w naszej przychodni. Nowe wnętrze jest teraz bardziej przestronne, nowoczesne i komfortowe dla pacjentów. Wprowadziliśmy lepsze oświetlenie, wygodne miejsca do siedzenia oraz intuicyjny system kolejkowy, który usprawni obsługę.

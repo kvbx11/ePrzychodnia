@@ -30,7 +30,7 @@
         <main>
             <div class="index-content">
             <?php
-    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia"); // polaczenie z baza danych
 
     if (!$connect) {
         die("Połączenie z bazą danych nie powiodło się: " . mysqli_connect_error());
@@ -48,10 +48,10 @@
     $id_lekarza = $_SESSION['id_lekarza_rezerwacja'];
 
     $sql = "INSERT INTO `rezerwacje` (`id_pacjenta`, `data`, `godzina`, `id_lekarza`) 
-            VALUES ('$id_pacjenta', '$data', '$godzina', '$id_lekarza')";
+            VALUES ('$id_pacjenta', '$data', '$godzina', '$id_lekarza')"; 
     if (mysqli_query($connect, $sql)) {
         $sql1="update `terminarz` set `dostepnosc`=0 where `dostepnosc`=1 and `id_lekarza`='".$id_lekarza."' and `godzina`='".$_SESSION['godzina']."';";
-        $query1=mysqli_query($connect,$sql1);
+        $query1=mysqli_query($connect,$sql1); // dodanie danych do bazy
         echo "Pomyślnie dodano wizytę";
     } else {
         echo "Błąd: " . mysqli_error($connect);

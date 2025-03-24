@@ -29,7 +29,7 @@
         
         <main>
             <div class="index-content">
-            <p>Czyje konto chcesz dodać?</p>
+            <p>Czyje konto chcesz dodać?</p> <!--Wyswietlenie formularza do wyboru grupy osob-->
                 <form method="post" action="lekarz.php">
                     <input type="submit" name="lekarz" value="Lekarza">
                 </form>

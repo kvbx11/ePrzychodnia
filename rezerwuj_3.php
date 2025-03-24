@@ -33,21 +33,21 @@
 
                 <?php
                 session_start();
-                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia"); // polaczenie z baza danych
 
                 if (!$connect) {
                     die("Połączenie z bazą danych nie powiodło się: " . mysqli_connect_error());
                 }
                 
-                $id_lekarz = $_SESSION['id_lekarza_rezerwacja'];
+                $id_lekarz = $_SESSION['id_lekarza_rezerwacja']; // pobranie danych
 
                 $sql = "SELECT `id_lekarza`,`Imie`,`Nazwisko`,`Specjalizacja` FROM `pracownik` WHERE `Specjalizacja`='".$_SESSION['specjalizacja']."' AND `id_lekarza` != ".$_SESSION['id_lekarza_rezerwacja'].";";
-                $query = mysqli_query($connect, $sql);
+                $query = mysqli_query($connect, $sql); // pobranie danych z bazy danych 
 
                 echo "Wybierz lekarza <br>";
                 echo "<form action='rezerwuj_3_1.php' method='post'>";
                 if(mysqli_num_rows($query)>0){
-                    while ($row = mysqli_fetch_assoc($query)) {
+                    while ($row = mysqli_fetch_assoc($query)) { // wyswietlenie listy lekarzy
                         echo "<input type='radio' name='id_lekarz' value='" . $row['id_lekarza'] . "'>" . htmlspecialchars($row['Imie']) . " " . htmlspecialchars($row['Nazwisko']) . " - " . htmlspecialchars($row['Specjalizacja']) . "</input>";
                     }
                     echo '<br> <input type="submit" value="Dalej">';

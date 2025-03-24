@@ -31,7 +31,7 @@
             <div class="index-content">
             <p>Jestem:</p>
                 <form method="post" action="zaloguj_pracownik.php">
-                    <input type="submit" name="lekarz" value="Lekarzem">
+                    <input type="submit" name="lekarz" value="Lekarzem"> <!--Wyswietlenie formularza umozliwajacego wybranie grupy uzytkownikow -->
                 </form>
                 <br>
                 <form method="post" action="zaloguj_pacjent.php">

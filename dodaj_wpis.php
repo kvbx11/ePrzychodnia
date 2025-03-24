@@ -30,7 +30,7 @@
         <main>
             <div class="index-content">
                 <?php
-                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia"); // polaczenie z baza danych
 
                 if (!$connect) {
                     die("Połączenie z bazą danych nie powiodło się.");
@@ -40,10 +40,10 @@
                 $row=mysqli_fetch_assoc($result);
                 $login_zal=$row['login'];
 
-                $query3="select `id_lekarza` from `pracownik` where `login`='".$login_zal."';";
+                $query3="select `id_lekarza` from `pracownik` where `login`='".$login_zal."';"; // pobranie danych
                 $result3=mysqli_query($connect,$query3);
                 $row=mysqli_fetch_assoc($result3);
-                echo "Twoje ID: ".$row['id_lekarza']."<br>";
+                echo "Twoje ID: ".$row['id_lekarza']."<br>"; // wyswietlenie ID lekarza zalogowanego
                 ?>
                 <br>
                 <form method="post">
@@ -58,7 +58,7 @@
             </div>
 
             <?php
-            if(isset($_POST['przeslij'])){
+            if(isset($_POST['przeslij'])){ // dodanie danych z formularza do bazy danych
                 $query4="INSERT INTO `badania`(`id_pacjenta`, `id_lekarza`, `opis_badania`, `diagnoza`, `recepta`, `data`) VALUES ('".$_POST['id_pacjenta']."','".$_POST['id_lekarza']."','".$_POST['opis']."','".$_POST['diagnoza']."','".$_POST['recepta']."','".$_POST['data']."')";
                 $result4=mysqli_query($connect,$query4);
     

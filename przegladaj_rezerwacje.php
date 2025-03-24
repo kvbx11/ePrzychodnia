@@ -30,7 +30,7 @@
         <main>
             <div class="index-content">
                 <?php
-                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia"); // polaczenie z baza danych
 
                     if (!$connect) {
                         die("Połączenie z bazą danych nie powiodło się.");
@@ -43,9 +43,9 @@
                     if($row['kto']=="pacjent"){
                         echo "<h2>Zaplanowane wizyty</h2>";
                         $query6 = "SELECT `id_pacjenta` FROM `pacjenci` WHERE `login`='" . $row['login'] . "'";
-                        $res6 = mysqli_query($connect, $query6);
+                        $res6 = mysqli_query($connect, $query6); // pobranie danych
                         
-                        if ($row3 = mysqli_fetch_assoc($res6)) { 
+                        if ($row3 = mysqli_fetch_assoc($res6)) { // pobranie danych o rezerwacjach
                             $query1 = "SELECT `data`, `godzina`, `imie`, `nazwisko`, `specjalizacja` 
                                        FROM `rezerwacje` 
                                        INNER JOIN `pracownik` ON `pracownik`.`id_lekarza` = `rezerwacje`.`id_lekarza` 
@@ -53,7 +53,7 @@
                                        
                             $res1 = mysqli_query($connect, $query1);
                             if (mysqli_num_rows($res1) > 0) {
-                                while ($row1 = mysqli_fetch_assoc($res1)) {
+                                while ($row1 = mysqli_fetch_assoc($res1)) { // wyswietlenie danych o rezerwacjach
                                     echo "Data: " . $row1['data'] . ", Godzina: " . $row1['godzina'] . ", Lekarz: " . $row1['imie'] . " " . $row1['nazwisko'] . ", " . $row1['specjalizacja'] . "<br>";
                                 }
                             } else {
@@ -67,16 +67,16 @@
                     if($row['kto']=="lekarz"){
                         $query7="select `id_lekarza` from `pracownik` where `login`='".$row['login']."';";
                         $res7=mysqli_query($connect,$query7);
-                        $row4=mysqli_fetch_assoc($res7); 
+                        $row4=mysqli_fetch_assoc($res7); // pobranie danych
 
                         echo '<h1>Zaplanowane wizyty dla Ciebie!</h1>';
                         $query5="select `id_pacjenta`,`data`,`godzina` from `rezerwacje` where `id_lekarza`='".$row4['id_lekarza']."';";
-                        $res5=mysqli_query($connect,$query5);
+                        $res5=mysqli_query($connect,$query5); // pobranie danych o rezerwacjach
                         $row3=mysqli_fetch_assoc($res5);
                         echo "";
-                        if(mysqli_num_rows($res5) > 0){
-                            while($row3 = mysqli_fetch_assoc($res5)){
-                                echo "<form method='POST' action='przekierowanie.php'>
+                        if(mysqli_num_rows($res5) > 0){ 
+                            while($row3 = mysqli_fetch_assoc($res5)){ // wyswietlenie przycisku do wyswietlenia rezerwacji i mozliwosci przejrzenia historii badan pacjenta po jego kliknieciu
+                                echo "<form method='POST' action='przekierowanie.php'> 
                                         <input type='hidden' name='id_pacjenta' value='".$row3['id_pacjenta']."'>
                                         <button type='submit'>ID Pacjenta: ".$row3['id_pacjenta'].", Data: ".$row3['data'].", Godzina: ".$row3['godzina']."</button>
                                       </form>";

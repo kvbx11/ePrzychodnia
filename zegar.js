@@ -1,13 +1,13 @@
 czas();
 function czas(){
 
-    var data=new Date();
+    var data=new Date(); // pobranie daty
 
-    var godzina=data.getHours();
+    var godzina=data.getHours(); // pobranie godziny
     if(godzina<10){
         godzina='0'+godzina;
     }
-    var minuta=data.getMinutes();
+    var minuta=data.getMinutes(); // dodanie zer jesli jest to wymagane
     if(minuta<10){
         minuta='0'+minuta;
     }
@@ -26,8 +26,8 @@ function czas(){
         dzien='0'+dzien;
     }
 
-    var teraz_godzina= godzina+":"+minuta+":"+sekunda;
+    var teraz_godzina= godzina+":"+minuta+":"+sekunda; // pobranie danych
     var teraz_data=dzien+"."+miesiac+"."+rok;
-    document.getElementById("data").innerHTML="Aktualny czas: <br>"+teraz_godzina+"<br>"+teraz_data;
+    document.getElementById("data").innerHTML="Aktualny czas: <br>"+teraz_godzina+"<br>"+teraz_data; // wyswietlenie danych na stronie
 }
-setInterval(czas,1000);
+setInterval(czas,1000); // interwał, aby czas sie odswiezał

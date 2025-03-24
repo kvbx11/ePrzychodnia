@@ -26,7 +26,7 @@ mysqli_close($connect);
     <div style="display: flex; flex: 1;">
         <nav>
             <?php
-                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia"); // polaczenie z baza danych
 
                 if (!$connect) {
                     die("Połączenie z bazą danych nie powiodło się.");
@@ -45,7 +45,7 @@ mysqli_close($connect);
                     $result2=mysqli_query($connect,$query2);
     
                     if($row=mysqli_fetch_assoc($result2)){
-                        //print_r($row);
+                        //wyswietlenie odpowiednich skrotow w zaleznosci od uprawnien
                         $zaloz_konto=$row['zaloz_konto'];
                         $usun_konto=$row['usun_konto'];
                         $dane_pacjentow=$row['dane_pacjentow'];

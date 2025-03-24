@@ -31,22 +31,22 @@
             <div class="index-content">
                 <h2>Historia z ostatnich 7 dni:</h2>
                 <?php
-                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia"); // polaczenie z baza
 
                     if (!$connect) {
                         die("Połączenie z bazą danych nie powiodło się.");
                     }
 
-                    $sql = "SELECT `id_pacjenta` FROM `pacjenci` INNER JOIN `zalogowani` ON `zalogowani`.`login` = `pacjenci`.`login`";
+                    $sql = "SELECT `id_pacjenta` FROM `pacjenci` INNER JOIN `zalogowani` ON `zalogowani`.`login` = `pacjenci`.`login`"; // pobranie danych o pacjencie
                     $qu = mysqli_query($connect, $sql);
                     $row = mysqli_fetch_assoc($qu);
 
                     if ($row) {
                         $sql1 = "SELECT * FROM `recepty` WHERE (`zaakceptowane` = 1 AND `id_pacjenta` = " . $row['id_pacjenta'] . ") AND TIMESTAMPDIFF(DAY, `data_akceptacji`, DATE(NOW())) <= 7";
-                        $query = mysqli_query($connect, $sql1);
+                        $query = mysqli_query($connect, $sql1); // pobranie danych o receptach
 
                         if (mysqli_num_rows($query) > 0) {
-                            echo "<h3>Wystawione recepty:</h3>";
+                            echo "<h3>Wystawione recepty:</h3>"; // wyswietlenie danych o receptach
                             while ($recepta = mysqli_fetch_assoc($query)) {
                                 echo "<p>Lek: " . $recepta['nazwa leku'] . " | Data akceptacji: " . $recepta['data_akceptacji'] . " | Dawka: ".$recepta['dawka']." | Dziennie: ".$recepta['dawkowanie_pacjent']."</p>";
                             }
@@ -56,7 +56,7 @@
 
 
                         $sql2 = "SELECT * FROM badania WHERE id_pacjenta = " . $row['id_pacjenta'] . " AND TIMESTAMPDIFF(DAY, data, DATE(NOW())) <= 7;";
-                        $query1 = mysqli_query($connect, $sql2);
+                        $query1 = mysqli_query($connect, $sql2); // pobranie danych o badaniach
 
                         if (mysqli_num_rows($query1) > 0) {
                             echo "<h3>Wizyty lekarskie z ostatnich 7 dni:</h3>";
@@ -64,7 +64,7 @@
                             while ($row1 = mysqli_fetch_assoc($query1)) {
                                 $sqlp = "SELECT `imie`, `nazwisko` FROM `pracownik` WHERE `id_lekarza` = '" . $row1['id_lekarza'] . "';";
                                 $queryp = mysqli_query($connect, $sqlp);
-                                if ($lekarz = mysqli_fetch_assoc($queryp)) {
+                                if ($lekarz = mysqli_fetch_assoc($queryp)) { // wyswietlenie danych o badaniach
                                     echo "Lekarz: " . $lekarz['imie'] . " " . $lekarz['nazwisko'] . "<br>";
                                     echo "Data wizyty: " . $row1['data'] . " Diagnoza: ".$row1['diagnoza']."<br><br>";
                                 }

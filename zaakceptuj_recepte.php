@@ -31,20 +31,20 @@
         <div class="index-content">
             <h2>Zaakceptuj oczekujące recepty!</h2>
             <?php
-                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia"); // polaczenie z baza danych
 
                 if (!$connect) {
                     die("Połączenie z bazą danych nie powiodło się.");
                 }
                 $sql0="select `id_lekarza` from `pracownik` inner join `zalogowani` on `zalogowani`.`login`=`pracownik`.`login`";
-                $query0=mysqli_query($connect,$sql0);
+                $query0=mysqli_query($connect,$sql0); // pobranie danych o lekarzu
                 $row0=mysqli_fetch_assoc($query0);
                 $id_lekarza=$row0['id_lekarza'];
                 $sql="select * from `recepty` where `zaakceptowane`=0 and `id_lekarza`=".$id_lekarza.";";
-                $query1=mysqli_query($connect,$sql);
+                $query1=mysqli_query($connect,$sql); // pobranie danych o niezaakceptowanych receptach
                 
-                while($row=mysqli_fetch_assoc($query1)){
-                    echo "<form method='POST' action='przekierowanie1.php'>
+                while($row=mysqli_fetch_assoc($query1)){ // wyswietlenie recept z mozliwoscia ich akceptacji
+                    echo "<form method='POST' action='przekierowanie1.php'> 
                     <input type='hidden' name='id_recepty' value='".$row['id_recepty']."'>
                     <button type='submit'>ID Pacjenta: ".$row['id_pacjenta'].", Lek: ".$row['nazwa leku'].", Dawka: ".$row['dawka'].", Dawkowanie przez pacjenta: ".$row['dawkowanie_pacjent'].", Ilość opakowań: ".$row['ilosc_opakowan']."</button>
                   </form>";

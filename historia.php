@@ -30,7 +30,7 @@
         <main>
             <div class="index-content">
                 <?php
-                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia"); // polaczenie z baza danych
 
                 if (!$connect) {
                     die("Połączenie z bazą danych nie powiodło się.");
@@ -40,8 +40,8 @@
                 $qry=mysqli_query($connect,$sql0);
                 $row0=mysqli_fetch_assoc($qry);
                 if($row0['kto']=="lekarz"){
-                    header("Location: historia_lekarz.php");
-                }
+                    header("Location: historia_lekarz.php"); // pobranie roli pacjenta i przeniesienie do adekwatnej podstrony
+                }   
                 $query="select `login` from `zalogowani`";
                 $result=mysqli_query($connect,$query);
                 $row=mysqli_fetch_assoc($result);
@@ -53,7 +53,7 @@
                 $imie=$row['imie'];
                 $nazw=$row['nazwisko'];
 
-                echo "<h2>Historia badań dla ".$imie." ".$nazw."</h2>";
+                echo "<h2>Historia badań dla ".$imie." ".$nazw."</h2>"; 
 
 
                 $query1="select `id_pacjenta` from `pacjenci` where `login`='".$login."';";
@@ -63,9 +63,9 @@
 
                 
                 $query2="select `imie`,`nazwisko`,`opis_badania`,`diagnoza`,`recepta`,`data` from `badania` inner join `pracownik` on `pracownik`.`id_lekarza`=`badania`.`id_lekarza` where `id_pacjenta`='".$id."';";
-                $res2=mysqli_query($connect,$query2);
+                $res2=mysqli_query($connect,$query2); // pobranie danych o przeprowadzonych badaniach
                 $row2=mysqli_fetch_assoc($res2);
-                if(mysqli_num_rows($res2)>0){
+                if(mysqli_num_rows($res2)>0){ // wyswietlenie danych o badaniach
                     echo "Lekarz: ".$row2['imie']." ".$row2['nazwisko'].", Opis wykonywanego badania: ".$row2['opis_badania'].", Diagnoza: ".$row2['diagnoza'].", Recepta: ".$row2['recepta'].", Data badania: ".$row2['data']."<br><br>"; 
                 }
                 else{

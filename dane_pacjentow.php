@@ -31,16 +31,16 @@
             <div class="index-content">
                 <h2>Pacjenci: </h2>
                 <?php
-                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+                    $connect = mysqli_connect("localhost", "root", "", "eprzychodnia"); // polaczenie z baza danych
 
                     if (!$connect) {
                         die("Połączenie z bazą danych nie powiodło się.");
                     }
 
                     $query0="select * from `pacjenci`";
-                    $result0=mysqli_query($connect,$query0);
+                    $result0=mysqli_query($connect,$query0); // pobranie danych
 
-                    while($row=mysqli_fetch_assoc($result0)){
+                    while($row=mysqli_fetch_assoc($result0)){ // wyswietlenie danych o pacjentach
                         echo "ID: ".$row['id_pacjenta'].", Imię: ".$row['imie'].", Nazwisko: ".$row['nazwisko'].", Ulica: ".$row['ulica'].", Nr_domu: ".$row['nr_domu'].", Kod Pocztowy: ".$row['kp'].", Miasto: ".$row['miasto'].", Telefon: ".$row['tel'].", Email: ".$row['email']."<br><br>";
                     }
                     

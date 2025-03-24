@@ -34,7 +34,7 @@
     <select name="id_lekarz">
         <option value="">Wybierz lekarza</option>
             <?php
-                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+                $connect = mysqli_connect("localhost", "root", "", "eprzychodnia"); // polaczenie z baza danych
 
                 if (!$connect) {
                     die("Połączenie z bazą danych nie powiodło się.");
@@ -43,12 +43,12 @@
                 $sql = "SELECT `id_lekarza`, `imie`, `nazwisko`, `specjalizacja` FROM `pracownik` WHERE `stanowisko` = 'lekarz';";
                 $qu = mysqli_query($connect, $sql);
 
-                while ($row = mysqli_fetch_assoc($qu)) {
+                while ($row = mysqli_fetch_assoc($qu)) { // wyswietlenie listy lekarzy
                     echo "<option value='" . $row['id_lekarza'] . "'>" . $row['imie'] . " " . $row['nazwisko'] . "</option>";
                 }
             ?>
             </select> <br>
-                <input type="text" name="nazwa_leku" placeholder="Nazwa leku"> <br>
+                <input type="text" name="nazwa_leku" placeholder="Nazwa leku"> <br> <!--Formularz do zamowienia recepty na lek-->
                 <input type="text" name="dawka_pacjent" placeholder="Dawkowanie przez pacjenta"> <br>
                 <input type="text" name="dawka" placeholder="Dawka"> <br>
                 <input type="number" name="opakowania" placeholder="Ilość opakowań"> <br>
@@ -63,7 +63,7 @@
             $sql="INSERT INTO `recepty`(`id_lekarza`, `id_pacjenta`, `nazwa leku`, `dawka`, `dawkowanie_pacjent`, `ilosc_opakowan`) 
             VALUES (".$_POST['id_lekarz'].", ".$row['id_pacjenta'].", '".$_POST['nazwa_leku']."', '".$_POST['dawka']."','".$_POST['dawka_pacjent']."',
             ".$_POST['opakowania'].");";
-            $query=mysqli_query($connect,$sql);
+            $query=mysqli_query($connect,$sql); // wprowadzenie recepty do bazy i oczekiwanie na jej zaakceptowanie
 
             if($query){
                 echo "Twoja recepta została zapisana i oczekuje na zatwierdzenie przez lekarza!";

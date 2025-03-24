@@ -29,7 +29,7 @@
         
         <main>
             <div class="index-content">
-                <form method='post'>
+                <form method='post'> <!--formularz do logowania-->
                     <input type='text' name='login' placeholder='Twój login'><br>
                     <input type='password' name='haslo' placeholder='Twoje hasło'><br><br>
                     <input type='submit' name='przeslij' value='Zaloguj się!'>
@@ -40,7 +40,7 @@
                         $log = $_POST['login'];
                         $haslo = sha1($_POST['haslo']);
 
-                        $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+                        $connect = mysqli_connect("localhost", "root", "", "eprzychodnia"); // polaczenie z baza danych
                         if(!$connect) {
                             die("Połączenie z bazą danych nie powiodło się.");
                         }
@@ -49,14 +49,14 @@
                         $stmt_1 = mysqli_prepare($connect, $query_1);
                         mysqli_stmt_bind_param($stmt_1, 's', $log);
                         mysqli_stmt_execute($stmt_1);
-                        mysqli_stmt_bind_result($stmt_1, $hashed_password, $status);
+                        mysqli_stmt_bind_result($stmt_1, $hashed_password, $status); // pobranie danych z bazy danych
                         mysqli_stmt_fetch($stmt_1);
                         mysqli_stmt_close($stmt_1);
 
                         if(sha1($hashed_password) == $haslo){
                             $query_2 = "INSERT INTO `zalogowani` (`login`, `haslo`, `kto`) VALUES (?, ?, ?)";
                             $stmt_2 = mysqli_prepare($connect, $query_2);
-                            mysqli_stmt_bind_param($stmt_2, 'sss', $log, $haslo, $status);
+                            mysqli_stmt_bind_param($stmt_2, 'sss', $log, $haslo, $status); // sprawdzenie poprawnosci danych 
                             mysqli_stmt_execute($stmt_2);
                             mysqli_stmt_close($stmt_2);
 

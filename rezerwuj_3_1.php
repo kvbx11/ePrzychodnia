@@ -32,7 +32,7 @@
 
 
                 <?php
-  $connect = mysqli_connect("localhost", "root", "", "eprzychodnia");
+  $connect = mysqli_connect("localhost", "root", "", "eprzychodnia"); // polaczenie z baza danych
 
   if (!$connect) {
       die("Połączenie z bazą danych nie powiodło się: " . mysqli_connect_error());
@@ -40,14 +40,14 @@
   session_start();
   $sql = "SELECT * FROM `terminarz` WHERE `dostepnosc` = true AND `id_lekarza` = ".$_POST['id_lekarz']." ORDER BY `data`, `godzina`;";
   $_SESSION['id_lekarza_dodatkowa']=$_POST['id_lekarz'];
-  $query = mysqli_query($connect, $sql);
+  $query = mysqli_query($connect, $sql); // pobranie danych o terminach
 
   echo "Dostępne terminy: <br>";
 
   $czas = date("H:i:s");
   $data = date("Y-m-d");
   $teraz = strtotime("$data $czas");
-  $maxTermin = strtotime("+30 days", $teraz);
+  $maxTermin = strtotime("+30 days", $teraz);// pobranie danych
 
   $i = 0;
   $terminy_w_ciagu_5_dni = [];
@@ -55,7 +55,7 @@
   while ($row = mysqli_fetch_assoc($query)) {
       $termin = strtotime($row['data'] . ' ' . $row['godzina']);
 
-      if ($termin > $teraz && $termin <= $maxTermin) {
+      if ($termin > $teraz && $termin <= $maxTermin) { // wyswietlenie terminow w ciagu 5 dni
 
           echo "<input type='radio' name='termin' value='" . $row['data'] . " " . $row['godzina'] . "'> ";
           echo $row['data'] . " - " . $row['godzina'] . "<br>";
@@ -77,12 +77,12 @@
       if (mysqli_num_rows($res) > 0) { 
           echo "<form method='post' action='rezerwuj_3_2.php'>";
   
-          while ($row = mysqli_fetch_assoc($res)) {
+          while ($row = mysqli_fetch_assoc($res)) { // wyswietlenie godzin 
               $_SESSION['godzina']=$row['godzina'];
               echo "<input type='radio' name='termin' value='" . $row['data'] . " " . $row['godzina'] . "'> ";
               echo $row['data'] . " - " . $row['godzina'] . "<br>";
           }
-  
+        // formularz do wybrania alternatywnej metody rezerwacji terminow
           echo "<br><input type='submit' value='Zarezerwuj termin'>";
           echo "</form>";
       } else {

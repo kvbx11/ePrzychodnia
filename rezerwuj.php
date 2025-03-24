@@ -47,7 +47,7 @@ $row = mysqli_fetch_assoc($query);
 $kto = $row['kto'];
 $login = $row['login'];
 
-if ($kto == "recepcjonista") {
+if ($kto == "recepcjonista") { // wyswietlenie 
     echo '<form action="rezerwuj_1.php" method="post">
             <input type="number" name="id_pacjenta" required placeholder="ID pacjenta"><br>
             <input type="submit" value="Dalej">
@@ -57,12 +57,12 @@ if ($kto == "recepcjonista") {
     $stmt = mysqli_prepare($connect, $sql);
     mysqli_stmt_bind_param($stmt, "s", $login);
     mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+    $result = mysqli_stmt_get_result($stmt); // pobranie danych z bazy
     $pacjent = mysqli_fetch_assoc($result);
 
     if ($pacjent) {
         $_SESSION['id_pacjent_rejestracja'] = $pacjent['id_pacjenta'];
-        header("Location: rezerwuj_1.php");
+        header("Location: rezerwuj_1.php"); // przeniesienie do innej podstrony
     } else {
         echo "Błąd: Nie znaleziono pacjenta.";
     }
