@@ -64,7 +64,7 @@
                         }
                     }
 
-                    if($row['kto']=="lekarz"){
+                    if($row['kto']=="lekarz" || $row['kto']=="lekarz internista"){
                         $query7="select `id_lekarza` from `pracownik` where `login`='".$row['login']."';";
                         $res7=mysqli_query($connect,$query7);
                         $row4=mysqli_fetch_assoc($res7); // pobranie danych

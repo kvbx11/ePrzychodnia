@@ -42,13 +42,18 @@
                 $id_lekarza=$row0['id_lekarza'];
                 $sql="select * from `recepty` where `zaakceptowane`=0 and `id_lekarza`=".$id_lekarza.";";
                 $query1=mysqli_query($connect,$sql); // pobranie danych o niezaakceptowanych receptach
-                
-                while($row=mysqli_fetch_assoc($query1)){ // wyswietlenie recept z mozliwoscia ich akceptacji
-                    echo "<form method='POST' action='przekierowanie1.php'> 
-                    <input type='hidden' name='id_recepty' value='".$row['id_recepty']."'>
-                    <button type='submit'>ID Pacjenta: ".$row['id_pacjenta'].", Lek: ".$row['nazwa leku'].", Dawka: ".$row['dawka'].", Dawkowanie przez pacjenta: ".$row['dawkowanie_pacjent'].", Ilość opakowań: ".$row['ilosc_opakowan']."</button>
-                  </form>";
+                if(mysqli_num_rows($query1)>0){
+                    while($row=mysqli_fetch_assoc($query1)){ // wyswietlenie recept z mozliwoscia ich akceptacji
+                        echo "<form method='POST' action='przekierowanie1.php'> 
+                        <input type='hidden' name='id_recepty' value='".$row['id_recepty']."'>
+                        <button type='submit'>ID Pacjenta: ".$row['id_pacjenta'].", Lek: ".$row['nazwa leku'].", Dawka: ".$row['dawka'].", Dawkowanie przez pacjenta: ".$row['dawkowanie_pacjent'].", Ilość opakowań: ".$row['ilosc_opakowan']."</button>
+                      </form>";
+                    }
                 }
+                else{
+                    echo "Brak recept do akceptacji";
+                }
+
             
             ?>
         </div>

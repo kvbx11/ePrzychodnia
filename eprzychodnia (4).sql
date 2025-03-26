@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 24, 2025 at 08:28 PM
+-- Generation Time: Mar 26, 2025 at 04:33 PM
 -- Wersja serwera: 10.4.32-MariaDB
 -- Wersja PHP: 8.2.12
 
@@ -204,11 +204,11 @@ CREATE TABLE `uprawnienia` (
 
 INSERT INTO `uprawnienia` (`stanowisko`, `zaloz_konto`, `usun_konto`, `dane_pacjentow`, `dodaj_wpis`, `rezerwuj`, `przegladaj_historie`, `przegladaj_rezerwacje`, `ewizyta`, `napisz_recepte`, `potwierdz_recepte`, `wyswietl_historie_7dni_lekarz`, `wyswietl_historie_7dni_pacjent`) VALUES
 ('admin', 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-('pielegniarz', 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0),
-('recepcjonista', 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0),
-('pacjent', 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1),
+('lekarz', 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0),
 ('lekarz internista', 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0),
-('lekarz', 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0);
+('pacjent', 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1),
+('pielegniarz', 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0),
+('recepcjonista', 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -221,13 +221,6 @@ CREATE TABLE `zalogowani` (
   `haslo` varchar(100) DEFAULT NULL,
   `kto` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Dumping data for table `zalogowani`
---
-
-INSERT INTO `zalogowani` (`login`, `haslo`, `kto`) VALUES
-('annkow63210', 'e64d0550468c07936609c3a6edf563b968a308b2', 'pacjent');
 
 --
 -- Indeksy dla zrzutów tabel
@@ -256,12 +249,27 @@ ALTER TABLE `pracownik`
 -- Indeksy dla tabeli `recepty`
 --
 ALTER TABLE `recepty`
-  ADD PRIMARY KEY (`id_recepty`);
+  ADD PRIMARY KEY (`id_recepty`),
+  ADD KEY `id_lekarza` (`id_lekarza`),
+  ADD KEY `id_pacjenta` (`id_pacjenta`);
+
+--
+-- Indeksy dla tabeli `rezerwacje`
+--
+ALTER TABLE `rezerwacje`
+  ADD KEY `id_pacjenta` (`id_pacjenta`);
+
+--
+-- Indeksy dla tabeli `terminarz`
+--
+ALTER TABLE `terminarz`
+  ADD UNIQUE KEY `id_lekarza` (`id_lekarza`);
 
 --
 -- Indeksy dla tabeli `uprawnienia`
 --
 ALTER TABLE `uprawnienia`
+  ADD PRIMARY KEY (`stanowisko`),
   ADD KEY `stanowisko` (`stanowisko`);
 
 --
@@ -296,6 +304,19 @@ ALTER TABLE `recepty`
 ALTER TABLE `badania`
   ADD CONSTRAINT `badania_ibfk_1` FOREIGN KEY (`id_lekarza`) REFERENCES `pracownik` (`id_lekarza`),
   ADD CONSTRAINT `badania_ibfk_2` FOREIGN KEY (`id_pacjenta`) REFERENCES `pacjenci` (`id_pacjenta`);
+
+--
+-- Constraints for table `recepty`
+--
+ALTER TABLE `recepty`
+  ADD CONSTRAINT `recepty_ibfk_1` FOREIGN KEY (`id_lekarza`) REFERENCES `pracownik` (`id_lekarza`),
+  ADD CONSTRAINT `recepty_ibfk_2` FOREIGN KEY (`id_pacjenta`) REFERENCES `pacjenci` (`id_pacjenta`);
+
+--
+-- Constraints for table `rezerwacje`
+--
+ALTER TABLE `rezerwacje`
+  ADD CONSTRAINT `rezerwacje_ibfk_1` FOREIGN KEY (`id_pacjenta`) REFERENCES `pacjenci` (`id_pacjenta`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

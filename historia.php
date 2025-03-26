@@ -39,7 +39,7 @@
                 $sql0="select `kto` from `zalogowani`";
                 $qry=mysqli_query($connect,$sql0);
                 $row0=mysqli_fetch_assoc($qry);
-                if($row0['kto']=="lekarz"){
+                if($row0['kto']=="lekarz" || $row0['kto']=="lekarz internista"){
                     header("Location: historia_lekarz.php"); // pobranie roli pacjenta i przeniesienie do adekwatnej podstrony
                 }   
                 $query="select `login` from `zalogowani`";
