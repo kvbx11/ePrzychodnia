@@ -86,6 +86,7 @@
                             echo "Brak zaplanowanych wizyt!";
                         }
                     }
+                    mysqli_close($connect);
                 ?>
             </div>
         </main>

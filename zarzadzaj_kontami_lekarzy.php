@@ -67,7 +67,7 @@
                     while($row=mysqli_fetch_assoc($result0)){ // wyswietlenie danych o pracownikach przychodni
                         echo "ID: ".$row['id_lekarza'].", Imię: ".$row['Imie'].", Nazwisko: ".$row['Nazwisko'].", Specjalizacja: ".$row['Specjalizacja'].", Pozwolenie: ".$row['PWZ'].", Telefon: ".$row['tel'].", Email: ".$row['email'].", Stanowisko: ".$row['stanowisko'].", Login: ".$row['login'].", Hasło: ".$row['haslo']."<br><br>";
                     }
-                    
+                    mysqli_close($connect);
                 ?>
             </div>
         </main>

@@ -50,6 +50,7 @@
                         $_SESSION['specjalizacja']=$row['Specjalizacja'];
                         echo "<input type='radio' name='id_lekarz' value='" . $row['id_lekarza'] . "'>" . htmlspecialchars($row['Imie']) . " " . htmlspecialchars($row['Nazwisko']) . " - " . htmlspecialchars($row['Specjalizacja']) . "</input> <br>";
                     }
+                    mysqli_close($connect);
                 ?>
                 <br>
                 <input type="submit" value="Dalej">

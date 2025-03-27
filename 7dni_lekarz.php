@@ -53,6 +53,7 @@
                     else{
                         echo "Brak wystawionych recept w ciągu ostatnich 7 dni";
                     }
+                    mysqli_close($connect);
                 ?>
 
             </div>

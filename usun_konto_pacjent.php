@@ -12,6 +12,6 @@ $query="delete from `pacjenci` where `id_pacjenta`=".$idx.""; // usuniecie z baz
 $result=mysqli_query($connect,$query);
 
 header("Location: zarzadzaj_kontami_pacjentow.php"); // powrot na strone wczesniejsza 
-
+mysqli_close($connect);
 
 ?>

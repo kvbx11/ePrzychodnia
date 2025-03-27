@@ -88,6 +88,7 @@
                 </form>';
                     }
                 }
+                mysqli_close($connect);
                 ?>
 
         </main>

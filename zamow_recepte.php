@@ -69,7 +69,7 @@
                 echo "Twoja recepta została zapisana i oczekuje na zatwierdzenie przez lekarza!";
             }
             }
-
+            mysqli_close($connect);
             ?>
         </div>
         </div>

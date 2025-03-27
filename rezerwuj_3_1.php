@@ -92,6 +92,7 @@
   </form>';
       }
   }
+  mysqli_close($connect);
   ?>          
         </main>
     </div>

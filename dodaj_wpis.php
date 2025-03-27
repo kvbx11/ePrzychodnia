@@ -64,6 +64,7 @@
     
                 echo "Dodano wizytę!";
             }
+            mysqli_close($connect);
             ?>
         </main>
     </div>

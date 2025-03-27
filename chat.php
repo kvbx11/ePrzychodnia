@@ -103,6 +103,7 @@ if (isset($row0['kto']) && $row0['kto'] === 'lekarz internista') { // generowani
             <input type="submit" value="Zakończ rozmowę i wyczyść dane">
           </form>';
 }
+mysqli_close($connect);
 ?>
 
 </div>

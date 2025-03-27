@@ -65,6 +65,7 @@
                             echo "Błąd logowania. Spróbuj ponownie.";
                         }
                     }
+                    mysqli_close($connect);
                 ?>
             </div>
         </main>

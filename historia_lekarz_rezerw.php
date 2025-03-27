@@ -52,7 +52,7 @@
                     }
             
             
-            
+                    mysqli_close($connect);
             
             ?>
                 

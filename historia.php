@@ -71,7 +71,7 @@
                 else{
                     echo "Brak dostępnej historii badań!";
                 }
-                
+                mysqli_close($connect);
 
                 ?>
         </main>

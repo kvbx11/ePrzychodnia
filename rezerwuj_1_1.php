@@ -79,6 +79,7 @@
                                 <input type="submit" value="Wybierz innego lekarza tej samej specjalizacji">
                             </form>';
                 }
+                mysqli_close($connect);
                 ?>
         </main>
     </div>

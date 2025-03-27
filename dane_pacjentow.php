@@ -43,7 +43,7 @@
                     while($row=mysqli_fetch_assoc($result0)){ // wyswietlenie danych o pacjentach
                         echo "ID: ".$row['id_pacjenta'].", Imię: ".$row['imie'].", Nazwisko: ".$row['nazwisko'].", Ulica: ".$row['ulica'].", Nr_domu: ".$row['nr_domu'].", Kod Pocztowy: ".$row['kp'].", Miasto: ".$row['miasto'].", Telefon: ".$row['tel'].", Email: ".$row['email']."<br><br>";
                     }
-                    
+                    mysqli_close($connect);
                 ?>
             </div>
         </main>

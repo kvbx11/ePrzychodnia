@@ -8,5 +8,5 @@
     $sql="update `recepty` set `zaakceptowane`=1, `data_akceptacji`=date(NOW()) where `id_recepty`=".$id_recepty.";";
     $query=mysqli_query($connect,$sql); // dodanie danych do bazy danych
     header("Location: zaakceptuj_recepte.php"); // przeniesienie na strone poczatkowa
-
+    mysqli_close($connect);
 ?>

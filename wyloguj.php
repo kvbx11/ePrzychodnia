@@ -8,5 +8,5 @@
     header("Location: index.php"); // powrot na strone glowna
 
 
-
+    mysqli_close($connect);
 ?>

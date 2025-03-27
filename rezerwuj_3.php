@@ -56,7 +56,7 @@
                 else{
                     echo "Przepraszamy, aktualnie nie ma żadnych lekarzy z wolnymi terminami";
                 }
-
+                mysqli_close($connect);
                 ?>                
         </main>
     </div>

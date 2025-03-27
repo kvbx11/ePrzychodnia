@@ -21,7 +21,7 @@
     } else {
         echo "Błąd: " . mysqli_error($connect);
     }
-
+    mysqli_close($connect);
 
 
 

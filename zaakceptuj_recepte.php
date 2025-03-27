@@ -53,7 +53,7 @@
                 else{
                     echo "Brak recept do akceptacji";
                 }
-
+                mysqli_close($connect);
             
             ?>
         </div>

@@ -13,5 +13,5 @@ $result=mysqli_query($connect,$query);
 
 header("Location: zarzadzaj_kontami_lekarzy.php"); // powrot na wczesniej uzywana strone
 
-
+mysqli_close($connect);
 ?>
